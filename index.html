@@ -1,475 +1,512 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Calculator By PirateRuler.com — All-in-one modern calculator suite</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="description" content="Calculator By PirateRuler.com — Modern suite of calculators: basic, BMI, age, GST, SIP, mortgage, tip & discount calculators. Fast, private, and easy to use."/>
-  <meta name="theme-color" content="#06203a" />
-  <style>
-    /* ---------- THEME ---------- */
-    :root{
-      --bg-1: #04101a;
-      --bg-2: #062749;
-      --panel: rgba(255,255,255,0.03);
-      --glass: rgba(255,255,255,0.02);
-      --accent-a: #5b8bff;
-      --accent-b: #6be0ff;
-      --accent-gradient: linear-gradient(135deg,var(--accent-a),var(--accent-b));
-      --muted: #9bb6d9;
-      --card-radius: 14px;
-      --gap: 16px;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Calculator By PirateRuler.com — Modern Calculator Suite</title>
+<meta name="description" content="Calculator By PirateRuler.com — modern suite of calculators (basic, BMI, age, GST, SIP, mortgage, tip, discount). Private and fast." />
+<style>
+  :root{
+    --bg: #071428;
+    --card-bg: rgba(255,255,255,0.03);
+    --text: #e6f0ff;
+    --muted: #9fb1d7;
+    --accent1: #6b7dff;
+    --accent2: #0bb3ff;
+    --glass: rgba(255,255,255,0.04);
+    --radius: 14px;
+    --card-border: rgba(255,255,255,0.04);
+  }
+  /* Light theme variables */
+  :root.light{
+    --bg: linear-gradient(180deg,#f7fbff,#eef6ff);
+    --card-bg: #ffffff;
+    --text: #0b2138;
+    --muted: #4b637f;
+    --glass: rgba(11,34,52,0.04);
+    --card-border: rgba(11,34,52,0.06);
+  }
 
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial; background:
-      radial-gradient(1200px 600px at 10% 10%, rgba(11,107,255,0.06), transparent 8%),
-      radial-gradient(900px 400px at 95% 90%, rgba(107,179,255,0.03), transparent 15%),
-      linear-gradient(180deg,var(--bg-1) 0%, #041826 50%, var(--bg-2) 100%);
-      color:#dff2ff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:inherit;text-decoration:none}
+  html,body{height:100%;margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial;color:var(--text);background:var(--bg);-webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+  .wrap{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 18px 64px;gap:20px;}
 
-    /* ---------- LAYOUT ---------- */
-    .wrap { max-width:1200px; margin:28px auto; padding:20px; display:grid; grid-template-columns: 260px 1fr; gap:24px; align-items:start; }
-    @media (max-width:980px){ .wrap{ grid-template-columns:1fr; padding:16px } }
+  /* header */
+  header.top{width:100%;max-width:1150px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:12px;background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 40px rgba(2,6,23,0.45);border:1px solid var(--card-border);}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:white;background:linear-gradient(135deg,var(--accent1),var(--accent2));box-shadow:0 12px 40px rgba(11,107,255,0.14)}
+  .brand h1{margin:0;font-size:18px}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+  .controls{display:flex;gap:10px;align-items:center}
+  button.icon-btn{background:transparent;border:1px solid transparent;padding:8px;border-radius:10px;color:var(--text);cursor:pointer}
+  button.icon-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(11,107,255,0.08)}
+  .theme-toggle{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:12px;background:linear-gradient(90deg,#0b6bff22,#0bb3ff11);border:1px solid rgba(255,255,255,0.03);cursor:pointer}
 
-    /* ---------- SIDEBAR ---------- */
-    .sidebar {
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:12px;
-      padding:18px;
-      box-shadow: 0 10px 40px rgba(2,6,23,0.55);
-      border:1px solid rgba(255,255,255,0.03);
-      height:fit-content;
-    }
-    .brand {
-      display:flex; align-items:center; gap:12px; margin-bottom:14px;
-    }
-    .brand .mark { width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; color:#072036;
-      background: linear-gradient(135deg, #9eb6ff 0%, #6be0ff 100%); box-shadow: 0 12px 30px rgba(11,107,255,0.12);
-      font-size:20px;
-    }
-    .brand h1 { margin:0; font-size:18px; color:#fff; letter-spacing:-0.01em; }
-    .brand p { margin:0; font-size:12px; color:var(--muted) }
+  /* hero */
+  .hero{width:100%;max-width:1150px;padding:26px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));box-shadow:0 18px 60px rgba(2,6,23,0.45);border:1px solid var(--card-border);text-align:center}
+  .hero h2{margin:0;font-size:28px;letter-spacing:-0.02em}
+  .hero p{margin:6px 0 0;color:var(--muted);max-width:960px;margin-left:auto;margin-right:auto}
 
-    .sidebar .menu { margin-top:14px; display:flex; flex-direction:column; gap:10px; }
-    .sidebar .menu a { display:block; padding:10px 12px; border-radius:10px; color:#dff2ff; background:transparent; border:1px solid rgba(255,255,255,0.02); transition:all .15s; font-weight:600 }
-    .sidebar .menu a:hover { transform:translateY(-3px); box-shadow:0 12px 30px rgba(2,6,23,0.6); background: rgba(11,107,255,0.06) }
+  /* tabs */
+  .tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}
+  .tab{padding:10px 14px;border-radius:999px;background:var(--card-bg);border:1px solid var(--card-border);cursor:pointer;color:var(--muted);font-weight:700;transition:all .16s}
+  .tab.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 12px 36px rgba(11,107,255,0.12);transform:translateY(-6px)}
 
-    .sidebar .small { margin-top:12px; color:var(--muted); font-size:13px; line-height:1.4; }
+  /* layout */
+  .grid{width:100%;max-width:1150px;display:grid;grid-template-columns:1fr 420px;gap:20px;align-items:start}
+  @media (max-width:1050px){.grid{grid-template-columns:1fr}}
+  .left{display:flex;flex-direction:column;gap:18px}
+  .card{background:var(--card-bg);border-radius:12px;padding:18px;border:1px solid var(--card-border);box-shadow:0 16px 48px rgba(2,6,23,0.35);min-height:160px}
+  .card h3{margin:0;font-size:16px}
+  .card .hint{color:var(--muted);font-size:13px;margin-top:6px}
 
-    /* ---------- MAIN ---------- */
-    .main { display:flex; flex-direction:column; gap:18px; }
-    .hero {
-      padding:22px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow: 0 18px 60px rgba(2,6,23,0.6);
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .hero h2 { margin:0; font-size:26px; color:#ffffff; letter-spacing:-0.01em; font-weight:800; }
-    .hero p { margin:8px 0 0 0; color:var(--muted); font-size:14px; max-width:900px; }
+  /* grid controls inside cards */
+  .keypad{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+  .btn{padding:10px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+  .btn.ghost{background:transparent;border:1px solid var(--card-border);color:var(--text)}
+  .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#fff;box-shadow:0 12px 36px rgba(11,107,255,0.12)}
+  input[type="text"],input[type="number"],input[type="date"],select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--card-border);background:transparent;color:var(--text);outline:none;box-shadow:none}
 
-    /* tabs */
-    .tabs { display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
-    .tab { padding:8px 12px; border-radius:12px; cursor:pointer; background:transparent; border:1px solid rgba(255,255,255,0.03); color:#dff2ff; font-weight:700; transition:all .12s }
-    .tab.active { background:var(--accent-gradient); color:#00142a; box-shadow:0 12px 30px rgba(11,107,255,0.12); transform:translateY(-4px) }
+  /* sidebar (right) */
+  .side{position:relative}
+  .sidebar{position:sticky;top:22px;border-radius:12px;padding:16px;background:var(--card-bg);border:1px solid var(--card-border);box-shadow:0 16px 46px rgba(2,6,23,0.35)}
+  .side .links{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+  .side a.block{display:block;padding:12px;border-radius:10px;background:transparent;border:1px solid transparent;color:var(--text);text-decoration:none}
+  .side a.block:hover{background:linear-gradient(90deg,#0b6bff11,#0bb3ff08);transform:translateY(-3px)}
 
-    /* cards layout */
-    .cards { display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:8px; }
-    @media (max-width:980px){ .cards{ grid-template-columns:1fr } }
-    .card {
-      background: rgba(255,255,255,0.02);
-      border-radius:12px; padding:18px; box-shadow:0 10px 40px rgba(2,6,23,0.5);
-      border:1px solid rgba(255,255,255,0.02);
-    }
-    .card h3 { margin:0; font-size:16px; color:#eaf6ff; }
-    .hint { color:var(--muted); font-size:13px; margin-top:6px; }
+  /* offcanvas sidebar (mobile) */
+  .offcanvas{position:fixed;right:16px;top:16px;z-index:220;display:none}
+  .drawer{position:fixed;right:0;top:0;bottom:0;width:320px;background:var(--card-bg);box-shadow:-40px 0 80px rgba(2,6,23,0.6);padding:22px;border-left:1px solid var(--card-border);transform:translateX(110%);transition:transform .34s cubic-bezier(.2,.9,.25,1)}
+  .drawer.open{transform:translateX(0)}
+  .drawer h4{margin:0;color:var(--text)}
+  .drawer a{display:block;padding:12px;border-radius:10px;margin-top:10px;color:var(--text);text-decoration:none;border:1px solid var(--card-border)}
+  .drawer a:hover{background:linear-gradient(90deg,#0b6bff11,#0bb3ff08);transform:translateY(-4px)}
 
-    /* inputs and controls */
-    input[type="text"], input[type="number"], input[type="date"], select {
-      width:100%; padding:10px 12px; border-radius:10px; border:none; outline:none; font-size:15px;
-      background: linear-gradient(180deg,#ffffff 0%, #f6faff 2%) ; color:#002033; box-shadow: inset 0 1px 0 rgba(8,16,24,0.04);
-    }
-    .controls { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px }
-    button.btn { padding:10px 14px; border-radius:10px; cursor:pointer; border:none; font-weight:700; color:#042034; background:var(--accent-gradient); box-shadow:0 10px 30px rgba(11,107,255,0.12) }
-    button.ghost { padding:9px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); color:#cfe8ff; background:transparent; cursor:pointer; font-weight:700 }
-    .result { margin-top:10px; color:#c8ffd4; font-weight:800; font-size:15px }
+  /* footer */
+  footer.sitefoot{width:100%;max-width:1150px;padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent);border:1px solid var(--card-border);text-align:center;color:var(--muted)}
+  footer .visit{padding:10px 18px;border-radius:12px;background:linear-gradient(90deg,#ff7aa2,#6b7dff);color:#fff;border:none;cursor:pointer;font-weight:700}
 
-    /* keypad for basic */
-    .keypad { display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-top:10px }
-    .key { background: rgba(255,255,255,0.96); border-radius:10px; padding:12px; font-weight:700; color:#002033; cursor:pointer; border:none; box-shadow:0 6px 18px rgba(2,6,23,0.08) }
+  /* small screens */
+  @media(max-width:640px){
+    .logo{width:44px;height:44px}
+    .brand h1{font-size:16px}
+    .drawer{width:100%;max-width:380px}
+    .grid{grid-template-columns:1fr}
+  }
 
-    /* footer */
-    footer { margin-top:22px; padding:18px; border-radius:12px; text-align:center; color:var(--muted) }
-    footer .visit { display:inline-block; background:linear-gradient(90deg,#ff9fbf,#77a7ff); color:#021426; font-weight:800; padding:10px 16px; border-radius:12px; border:none; cursor:pointer; box-shadow:0 12px 30px rgba(2,6,23,0.6) }
-    footer small { display:block; margin-top:10px; color:var(--muted) }
-
-    /* small screens adjustments */
-    @media (max-width:540px){
-      .brand h1{font-size:16px}
-      .wrap{gap:12px}
-      .sidebar{padding:14px}
-    }
-  </style>
+  /* small animations */
+  .fade-up{opacity:0;transform:translateY(16px);transition:all .6s cubic-bezier(.2,.9,.25,1)}
+  .fade-up.show{opacity:1;transform:none}
+</style>
 </head>
 <body>
-  <div class="wrap" role="document">
+<div class="wrap" id="app">
+  <!-- top header -->
+  <header class="top" role="banner" aria-label="Top header">
+    <div class="brand" role="navigation" aria-label="Home">
+      <a href="/" style="display:flex;align-items:center;gap:12px">
+        <div class="logo" aria-hidden="true">PR</div>
+      </a>
+      <div>
+        <h1>Calculator By PirateRuler.com</h1>
+        <p>Modern utilities · Private · Fast</p>
+      </div>
+    </div>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar" aria-label="Navigation & resources">
-      <div class="brand" role="banner">
-        <div class="mark" aria-hidden="true">PR</div>
-        <div>
-          <h1>Calculator By PirateRuler.com</h1>
-          <p>Modern utilities • Private • Fast</p>
-        </div>
+    <div class="controls" role="toolbar" aria-label="Header controls">
+      <div tabindex="0" class="theme-toggle" id="themeToggle" title="Toggle light / dark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3v2M12 19v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M3 12h2M19 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <small style="font-weight:700">Theme</small>
       </div>
 
-      <nav class="menu" aria-label="Resources">
-        <a href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
-        <a href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-        <a href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
-        <a href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
-      </nav>
+      <button class="icon-btn" id="openDrawer" aria-controls="drawer" aria-expanded="false" title="Open sidebar">
+        <!-- icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </header>
 
-      <div class="small" style="margin-top:16px;">
-        <strong style="display:block;color:#dff2ff;margin-bottom:8px">Backup</strong>
-        If this site is offline you can always visit the main PirateRuler site for backups and resources:
-        <div style="margin-top:10px;">
-          <a class="ghost" href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">pirateruler.com</a>
+  <!-- hero -->
+  <section class="hero fade-up" id="hero">
+    <h2>All-in-one Modern Calculator Suite</h2>
+    <p>Fast, privacy-first calculators: basic math, BMI, age, GST, SIP, mortgage, tip and discount calculators — built for simplicity and reliability.</p>
+
+    <div class="tabs" role="tablist" aria-label="Choose calculator">
+      <button class="tab active" data-target="basic" role="tab" aria-selected="true">Basic</button>
+      <button class="tab" data-target="age" role="tab">Age</button>
+      <button class="tab" data-target="bmi" role="tab">BMI</button>
+      <button class="tab" data-target="gst" role="tab">GST</button>
+      <button class="tab" data-target="sip" role="tab">SIP</button>
+      <button class="tab" data-target="mortgage" role="tab">Mortgage</button>
+      <button class="tab" data-target="tip" role="tab">Tip</button>
+      <button class="tab" data-target="discount" role="tab">Discount</button>
+    </div>
+  </section>
+
+  <!-- main grid -->
+  <div class="grid">
+    <div class="left">
+      <!-- Basic calculator -->
+      <article id="basic" class="card fade-up">
+        <h3>Basic Calculator</h3>
+        <div class="hint">Use keypad or type on keyboard. Supports + - × ÷ ( ), decimals.</div>
+        <input id="basic-display" type="text" aria-label="Basic display" readonly placeholder="0" />
+        <div class="keypad" role="group" aria-label="Calculator keypad">
+          <button class="btn ghost" onclick="basicAdd('7')">7</button>
+          <button class="btn ghost" onclick="basicAdd('8')">8</button>
+          <button class="btn ghost" onclick="basicAdd('9')">9</button>
+          <button class="btn ghost" onclick="basicAdd('/')">÷</button>
+
+          <button class="btn ghost" onclick="basicAdd('4')">4</button>
+          <button class="btn ghost" onclick="basicAdd('5')">5</button>
+          <button class="btn ghost" onclick="basicAdd('6')">6</button>
+          <button class="btn ghost" onclick="basicAdd('*')">×</button>
+
+          <button class="btn ghost" onclick="basicAdd('1')">1</button>
+          <button class="btn ghost" onclick="basicAdd('2')">2</button>
+          <button class="btn ghost" onclick="basicAdd('3')">3</button>
+          <button class="btn ghost" onclick="basicAdd('-')">−</button>
+
+          <button class="btn ghost" onclick="basicAdd('0')">0</button>
+          <button class="btn ghost" onclick="basicAdd('.')">.</button>
+          <button class="btn primary" onclick="basicEval()">=</button>
+          <button class="btn ghost" onclick="basicAdd('+')">+</button>
+
+          <button class="btn ghost" style="grid-column:span 2" onclick="basicClear()">Clear</button>
+          <button class="btn ghost" style="grid-column:span 2" onclick="basicBack()">Back</button>
+        </div>
+        <div id="basic-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- Age -->
+      <article id="age" class="card fade-up" hidden>
+        <h3>Age Calculator</h3>
+        <div class="hint">Calculate years, months and days from birthday.</div>
+        <input id="dob" type="date" aria-label="Date of birth" />
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeAge()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('dob').value=''; setText('age-result','')">Clear</button>
+        </div>
+        <div id="age-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- BMI -->
+      <article id="bmi" class="card fade-up" hidden>
+        <h3>BMI Calculator</h3>
+        <div class="hint">Enter weight (kg) and height (m).</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="bmi-weight" type="number" placeholder="Weight (kg)" />
+          <input id="bmi-height" type="number" step="0.01" placeholder="Height (m)" />
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeBMI()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('bmi-weight').value='';document.getElementById('bmi-height').value=''; setText('bmi-result','')">Clear</button>
+        </div>
+        <div id="bmi-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- GST -->
+      <article id="gst" class="card fade-up" hidden>
+        <h3>GST Calculator</h3>
+        <div class="hint">Compute total with GST percentage.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="gst-amount" type="number" placeholder="Amount" />
+          <input id="gst-rate" type="number" placeholder="GST rate (%)" />
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeGST()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('gst-amount').value='';document.getElementById('gst-rate').value=''; setText('gst-result','')">Clear</button>
+        </div>
+        <div id="gst-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- SIP -->
+      <article id="sip" class="card fade-up" hidden>
+        <h3>SIP Calculator</h3>
+        <div class="hint">Monthly investment, annual rate and years.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="sip-monthly" type="number" placeholder="Monthly invest" />
+          <input id="sip-rate" type="number" placeholder="Rate (%)" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="sip-years" type="number" placeholder="Years" />
+          <div></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeSIP()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('sip-monthly').value='';document.getElementById('sip-rate').value='';document.getElementById('sip-years').value=''; setText('sip-result','')">Clear</button>
+        </div>
+        <div id="sip-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- Mortgage -->
+      <article id="mortgage" class="card fade-up" hidden>
+        <h3>Mortgage Calculator</h3>
+        <div class="hint">Loan amount, annual interest and tenure (years).</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="mort-amount" type="number" placeholder="Loan amount" />
+          <input id="mort-rate" type="number" placeholder="Annual rate (%)" />
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="mort-years" type="number" placeholder="Years" />
+          <div></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeMortgage()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('mort-amount').value='';document.getElementById('mort-rate').value='';document.getElementById('mort-years').value=''; setText('mort-result','')">Clear</button>
+        </div>
+        <div id="mort-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- Tip -->
+      <article id="tip" class="card fade-up" hidden>
+        <h3>Tip Calculator</h3>
+        <div class="hint">Add a tip percentage to the bill.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="tip-bill" type="number" placeholder="Bill amount" />
+          <input id="tip-percent" type="number" placeholder="Tip %" />
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeTip()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('tip-bill').value='';document.getElementById('tip-percent').value=''; setText('tip-result','')">Clear</button>
+        </div>
+        <div id="tip-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+
+      <!-- Discount -->
+      <article id="discount" class="card fade-up" hidden>
+        <h3>Discount Calculator</h3>
+        <div class="hint">Final price after percentage discount.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+          <input id="discount-price" type="number" placeholder="Price" />
+          <input id="discount-percent" type="number" placeholder="Discount %" />
+        </div>
+        <div style="display:flex;gap:10px;margin-top:10px">
+          <button class="btn primary" onclick="computeDiscount()">Calculate</button>
+          <button class="btn ghost" onclick="document.getElementById('discount-price').value='';document.getElementById('discount-percent').value=''; setText('discount-result','')">Clear</button>
+        </div>
+        <div id="discount-result" style="margin-top:10px;font-weight:700;color:var(--muted)" aria-live="polite"></div>
+      </article>
+    </div>
+
+    <!-- right sidebar -->
+    <aside class="side">
+      <div class="sidebar fade-up">
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:white">PR</div>
+          <div>
+            <strong style="display:block">Calculator By PirateRuler.com</strong>
+            <small style="color:var(--muted)">Reliable tools • Private & fast</small>
+          </div>
+        </div>
+
+        <div class="links" style="margin-top:14px">
+          <a class="block" href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
+          <a class="block" href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+          <a class="block" href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
+          <a class="block" href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
+        </div>
+
+        <div style="margin-top:14px">
+          <small style="color:var(--muted)">Backup</small>
+          <div style="color:var(--muted);margin-top:4px;font-size:14px;line-height:1.3">If this site is offline you can visit the main PirateRuler site for backups and resources:</div>
+          <a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer" style="display:inline-block;margin-top:10px;color:var(--text);text-decoration:underline">pirateruler.com</a>
         </div>
       </div>
     </aside>
-
-    <!-- MAIN -->
-    <main class="main" role="main">
-      <section class="hero" aria-labelledby="hero-title">
-        <h2 id="hero-title">All-in-one Modern Calculator Suite</h2>
-        <p>Fast, privacy-first calculators: basic math, BMI, age, GST, SIP, mortgage, tip and discount calculators — built for simplicity and reliability. (Currency tools live on PirateRuler currency site.)</p>
-
-        <div class="tabs" role="tablist" aria-label="Calculators">
-          <button class="tab active" data-target="basic" role="tab" aria-selected="true">Basic</button>
-          <button class="tab" data-target="age" role="tab">Age</button>
-          <button class="tab" data-target="bmi" role="tab">BMI</button>
-          <button class="tab" data-target="gst" role="tab">GST</button>
-          <button class="tab" data-target="sip" role="tab">SIP</button>
-          <button class="tab" data-target="mortgage" role="tab">Mortgage</button>
-          <button class="tab" data-target="tip" role="tab">Tip</button>
-          <button class="tab" data-target="discount" role="tab">Discount</button>
-        </div>
-      </section>
-
-      <!-- calculators grid -->
-      <div class="cards" aria-live="polite">
-
-        <!-- BASIC -->
-        <section id="basic" class="card" role="region" aria-labelledby="basic-h">
-          <h3 id="basic-h">Basic Calculator</h3>
-          <div class="hint">Type in the box or use the keypad. Safe evaluation only (numbers & operators).</div>
-          <input id="basic-input" type="text" inputmode="numeric" aria-label="Basic expression input" placeholder="Type expression (e.g. 12*3+4)" />
-          <div class="keypad" role="toolbar" aria-label="Calculator keypad">
-            <button class="key" onclick="basicAdd('7')">7</button>
-            <button class="key" onclick="basicAdd('8')">8</button>
-            <button class="key" onclick="basicAdd('9')">9</button>
-            <button class="key" onclick="basicAdd('/')">÷</button>
-
-            <button class="key" onclick="basicAdd('4')">4</button>
-            <button class="key" onclick="basicAdd('5')">5</button>
-            <button class="key" onclick="basicAdd('6')">6</button>
-            <button class="key" onclick="basicAdd('*')">×</button>
-
-            <button class="key" onclick="basicAdd('1')">1</button>
-            <button class="key" onclick="basicAdd('2')">2</button>
-            <button class="key" onclick="basicAdd('3')">3</button>
-            <button class="key" onclick="basicAdd('-')">−</button>
-
-            <button class="key" onclick="basicAdd('0')">0</button>
-            <button class="key" onclick="basicAdd('.')">.</button>
-            <button class="key" onclick="basicEval()">=</button>
-            <button class="key" onclick="basicAdd('+')">+</button>
-          </div>
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <button class="btn" onclick="basicEval()">Evaluate</button>
-            <button class="ghost" onclick="basicClear()">Clear</button>
-            <button class="ghost" onclick="basicBack()">Back</button>
-          </div>
-          <div id="basic-result" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- AGE -->
-        <section id="age" class="card" role="region" aria-labelledby="age-h" hidden>
-          <h3 id="age-h">Age Calculator</h3>
-          <div class="hint">Calculate years, months and days from birthday.</div>
-          <input id="dob" type="date" aria-label="Date of birth" />
-          <div class="controls">
-            <button class="btn" onclick="computeAge()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('dob').value=''; setText('age-result','')">Clear</button>
-          </div>
-          <div id="age-result" class="result"></div>
-        </section>
-
-        <!-- BMI -->
-        <section id="bmi" class="card" role="region" aria-labelledby="bmi-h" hidden>
-          <h3 id="bmi-h">BMI Calculator</h3>
-          <div class="hint">Enter weight (kg) and height (m).</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="bmi-weight" type="number" step="0.1" placeholder="Weight (kg)" />
-            <input id="bmi-height" type="number" step="0.01" placeholder="Height (m)" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeBMI()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('bmi-weight').value='';document.getElementById('bmi-height').value=''; setText('bmi-result','')">Clear</button>
-          </div>
-          <div id="bmi-result" class="result"></div>
-        </section>
-
-        <!-- GST -->
-        <section id="gst" class="card" role="region" aria-labelledby="gst-h" hidden>
-          <h3 id="gst-h">GST Calculator</h3>
-          <div class="hint">Compute total amount with GST % applied.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="gst-amount" type="number" step="0.01" placeholder="Amount" />
-            <input id="gst-rate" type="number" step="0.01" placeholder="GST rate (%)" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeGST()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('gst-amount').value='';document.getElementById('gst-rate').value=''; setText('gst-result','')">Clear</button>
-          </div>
-          <div id="gst-result" class="result"></div>
-        </section>
-
-        <!-- SIP -->
-        <section id="sip" class="card" role="region" aria-labelledby="sip-h" hidden>
-          <h3 id="sip-h">SIP Calculator</h3>
-          <div class="hint">Monthly contribution, annual rate and years.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="sip-monthly" type="number" step="0.01" placeholder="Monthly invest" />
-            <input id="sip-rate" type="number" step="0.01" placeholder="Rate (%)" />
-          </div>
-          <div style="margin-top:8px">
-            <input id="sip-years" type="number" placeholder="Years" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeSIP()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('sip-monthly').value='';document.getElementById('sip-rate').value='';document.getElementById('sip-years').value=''; setText('sip-result','')">Clear</button>
-          </div>
-          <div id="sip-result" class="result"></div>
-        </section>
-
-        <!-- Mortgage -->
-        <section id="mortgage" class="card" role="region" aria-labelledby="mortgage-h" hidden>
-          <h3 id="mortgage-h">Mortgage Calculator</h3>
-          <div class="hint">Loan amount, annual interest and years to repay.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="mort-amount" type="number" step="0.01" placeholder="Loan amount" />
-            <input id="mort-rate" type="number" step="0.01" placeholder="Annual rate (%)" />
-          </div>
-          <div style="margin-top:8px">
-            <input id="mort-years" type="number" placeholder="Years" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeMortgage()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('mort-amount').value='';document.getElementById('mort-rate').value='';document.getElementById('mort-years').value=''; setText('mort-result','')">Clear</button>
-          </div>
-          <div id="mort-result" class="result"></div>
-        </section>
-
-        <!-- Tip -->
-        <section id="tip" class="card" role="region" aria-labelledby="tip-h" hidden>
-          <h3 id="tip-h">Tip Calculator</h3>
-          <div class="hint">Add tip percentage to bill or split it.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="tip-bill" type="number" step="0.01" placeholder="Bill amount" />
-            <input id="tip-percent" type="number" step="0.1" placeholder="Tip %" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeTip()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('tip-bill').value='';document.getElementById('tip-percent').value=''; setText('tip-result','')">Clear</button>
-          </div>
-          <div id="tip-result" class="result"></div>
-        </section>
-
-        <!-- Discount -->
-        <section id="discount" class="card" role="region" aria-labelledby="discount-h" hidden>
-          <h3 id="discount-h">Discount Calculator</h3>
-          <div class="hint">Final price after percentage discount.</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <input id="discount-price" type="number" step="0.01" placeholder="Original price" />
-            <input id="discount-percent" type="number" step="0.1" placeholder="Discount %" />
-          </div>
-          <div class="controls">
-            <button class="btn" onclick="computeDiscount()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('discount-price').value='';document.getElementById('discount-percent').value=''; setText('discount-result','')">Clear</button>
-          </div>
-          <div id="discount-result" class="result"></div>
-        </section>
-
-      </div> <!-- cards -->
-
-      <!-- footer -->
-      <footer>
-        <button class="visit" onclick="window.open('https://pirateruler.com','_blank')">Visit PirateRuler.com</button>
-        <small>© <span id="year"></span> Calculator By PirateRuler.com — All rights reserved. Backup & resources: <a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">pirateruler.com</a></small>
-      </footer>
-
-    </main>
   </div>
 
-  <script>
-    // quick helpers
-    function setText(id, text){ const el = document.getElementById(id); if(el) { el.textContent = text; } }
+  <footer class="sitefoot fade-up" role="contentinfo">
+    <div style="margin-bottom:10px">
+      <button class="visit" onclick="window.open('https://pirateruler.com','_blank')">Visit PirateRuler.com</button>
+    </div>
+    <div style="font-size:13px;color:var(--muted);">© <span id="year"></span> Calculator By PirateRuler.com — All rights reserved. Backup & resources: <a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline">pirateruler.com</a></div>
+  </footer>
+</div>
 
-    // tabs logic
-    const tabButtons = Array.from(document.querySelectorAll('.tab'));
-    function showTab(name){
-      // hide all sections
-      const sections = document.querySelectorAll('.cards > section');
-      sections.forEach(s => s.hidden = true);
-      // activate tab
-      tabButtons.forEach(b => b.classList.toggle('active', b.getAttribute('data-target') === name));
-      // show requested
-      const el = document.getElementById(name);
-      if(el) el.hidden = false;
-      // small scroll to top of main for mobile
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+<!-- offcanvas drawer for mobile -->
+<div class="offcanvas" id="offcanvas">
+  <div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true">
+    <h4>PirateRuler Links</h4>
+    <p style="color:var(--muted);margin-top:4px">Quick links & backup resources</p>
+    <a href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
+    <a href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+    <a href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
+    <a href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
+    <div style="height:16px"></div>
+    <button class="btn primary" onclick="window.open('https://pirateruler.com','_blank')">Open PirateRuler.com</button>
+    <div style="height:18px"></div>
+    <button class="btn ghost" onclick="closeDrawer()">Close</button>
+  </div>
+</div>
+
+<script>
+  // small helpers
+  function setText(id, txt){ const el=document.getElementById(id); if(el) el.textContent = txt; }
+
+  // initial year
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // tab switching logic
+  const tabs = Array.from(document.querySelectorAll('.tab'));
+  const sections = ['basic','age','bmi','gst','sip','mortgage','tip','discount'];
+  function setActive(target){
+    tabs.forEach(t=>{ t.classList.toggle('active', t.dataset.target===target); t.setAttribute('aria-selected', t.dataset.target===target) });
+    sections.forEach(s=>{ const el=document.getElementById(s); if(el) el.hidden = (s !== target); });
+    // reveal animation
+    document.querySelectorAll('#'+target + ' .fade-up, #'+target + ' .card').forEach(n=>n.classList.add('show'));
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  tabs.forEach(btn => {
+    btn.addEventListener('click', ()=> setActive(btn.dataset.target));
+  });
+  // default
+  setActive('basic');
+
+  // simple fade-up reveal
+  document.querySelectorAll('.fade-up').forEach(el => requestAnimationFrame(()=>el.classList.add('show')));
+
+  // theme toggle
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  // detect saved
+  if(localStorage.getItem('pr-theme') === 'light') root.classList.add('light');
+  themeToggle.addEventListener('click', ()=>{
+    const isLight = root.classList.toggle('light');
+    localStorage.setItem('pr-theme', isLight ? 'light' : 'dark');
+  });
+
+  // offcanvas / drawer
+  const openDrawerBtn = document.getElementById('openDrawer');
+  const drawer = document.getElementById('drawer');
+  const offcanvas = document.getElementById('offcanvas');
+  function openDrawer(){
+    drawer.classList.add('open');
+    offcanvas.style.display = 'block';
+    drawer.setAttribute('aria-hidden','false');
+    openDrawerBtn.setAttribute('aria-expanded','true');
+  }
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    setTimeout(()=> offcanvas.style.display='none', 350);
+    drawer.setAttribute('aria-hidden','true');
+    openDrawerBtn.setAttribute('aria-expanded','false');
+  }
+  openDrawerBtn.addEventListener('click', ()=> {
+    if(drawer.classList.contains('open')) closeDrawer(); else openDrawer();
+  });
+  // close drawer when clicking outside
+  offcanvas.addEventListener('click', (e)=>{ if(e.target === offcanvas) closeDrawer(); });
+
+  // keyboard support for basic calculator
+  document.addEventListener('keydown', (e)=>{
+    const allowed = "0123456789+-*/().";
+    if(allowed.includes(e.key)) {
+      basicAdd(e.key);
     }
-    tabButtons.forEach(b => b.addEventListener('click', () => showTab(b.getAttribute('data-target'))));
-    // default show basic
-    showTab('basic');
+    if(e.key === 'Enter') basicEval();
+    if(e.key === 'Backspace') basicBack();
+  });
 
-    // set year
-    document.getElementById('year').textContent = new Date().getFullYear();
+  /* ----------------- Calculator Functions ----------------- */
 
-    /* ---------------- BASIC CALCULATOR ---------------- */
-    const basicInput = document.getElementById('basic-input');
-    const basicResult = document.getElementById('basic-result');
-
-    function basicAdd(v){
-      // append operator or digit
-      basicInput.value = (basicInput.value || '') + v;
-      basicInput.focus();
+  // BASIC
+  let basicExpr = '';
+  function basicAdd(v){
+    basicExpr += v;
+    document.getElementById('basic-display').value = basicExpr;
+  }
+  function basicClear(){ basicExpr = ''; document.getElementById('basic-display').value = ''; setText('basic-result',''); }
+  function basicBack(){ basicExpr = basicExpr.slice(0,-1); document.getElementById('basic-display').value = basicExpr; }
+  function basicEval(){
+    try{
+      if(!basicExpr) return;
+      // safe filter
+      const safe = basicExpr.replace(/[^\d\.\+\-\*\/\%\(\) ]/g,'');
+      // eslint-disable-next-line no-new-func
+      const val = Function('"use strict"; return ('+safe+')')();
+      const out = (Number.isFinite(val) ? val : 'Invalid');
+      setText('basic-result', 'Result: ' + out);
+      basicExpr = ''+out;
+      document.getElementById('basic-display').value = basicExpr;
+    }catch(e){
+      setText('basic-result','Invalid expression');
     }
-    function basicClear(){
-      basicInput.value = '';
-      basicResult.textContent = '';
-      basicInput.focus();
-    }
-    function basicBack(){
-      basicInput.value = (basicInput.value || '').slice(0, -1);
-      basicInput.focus();
-    }
+  }
 
-    function basicEval(){
-      const expr = (basicInput.value || '').trim();
-      if(!expr){ basicResult.textContent = ''; return; }
-      // Secure evaluation: allow only digits, parentheses, operators, decimals, spaces
-      const safe = expr.replace(/[^\d\.\+\-\*\/\%\(\) ]/g, '');
-      try {
-        // Prevent empty or suspicious
-        if(!safe || safe.length > 200) { basicResult.textContent = 'Invalid expression'; return; }
-        // Use Function to evaluate in strict mode
-        const val = Function('"use strict";return (' + safe + ')')();
-        if(!isFinite(val)) { basicResult.textContent = 'Invalid result'; return; }
-        basicResult.textContent = 'Result: ' + (Math.round((val + Number.EPSILON) * 1000000) / 1000000);
-        basicInput.value = String(basicResult.textContent.split(':')[1] ? basicResult.textContent.split(':')[1].trim() : val);
-      } catch(e){
-        basicResult.textContent = 'Invalid expression';
-      }
-      basicInput.focus();
-    }
+  // AGE
+  function computeAge(){
+    const d = document.getElementById('dob').value;
+    if(!d) return setText('age-result','Please enter birth date');
+    const dob = new Date(d);
+    if(isNaN(dob)) return setText('age-result','Invalid date');
+    const today = new Date();
+    let y = today.getFullYear() - dob.getFullYear();
+    let m = today.getMonth() - dob.getMonth();
+    let dd = today.getDate() - dob.getDate();
+    if(dd < 0){ m--; dd += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); }
+    if(m < 0){ y--; m += 12; }
+    setText('age-result', `${y} years, ${m} months, ${dd} days`);
+  }
 
-    // allow Enter in input to evaluate, Backspace works naturally
-    basicInput.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter') { e.preventDefault(); basicEval(); }
-    });
+  // BMI
+  function computeBMI(){
+    const w = parseFloat(document.getElementById('bmi-weight').value);
+    const h = parseFloat(document.getElementById('bmi-height').value);
+    if(!w || !h) return setText('bmi-result','Enter valid weight and height');
+    const bmi = w / (h*h);
+    setText('bmi-result','BMI: ' + bmi.toFixed(2));
+  }
 
-    /* ---------------- AGE ---------------- */
-    function computeAge(){
-      const v = document.getElementById('dob').value;
-      if(!v) { setText('age-result','Please select birth date'); return; }
-      const dob = new Date(v);
-      if(isNaN(dob)) { setText('age-result','Invalid date'); return; }
-      const now = new Date();
-      let years = now.getFullYear() - dob.getFullYear();
-      let months = now.getMonth() - dob.getMonth();
-      let days = now.getDate() - dob.getDate();
-      if(days < 0){ months--; days += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
-      if(months < 0){ years--; months += 12; }
-      setText('age-result', years + ' years, ' + months + ' months, ' + days + ' days');
-    }
+  // GST
+  function computeGST(){
+    const a = parseFloat(document.getElementById('gst-amount').value);
+    const r = parseFloat(document.getElementById('gst-rate').value);
+    if(isNaN(a) || isNaN(r)) return setText('gst-result','Enter amount and rate');
+    const total = a + (a * r / 100);
+    setText('gst-result','Total: ' + total.toFixed(2));
+  }
 
-    /* ---------------- BMI ---------------- */
-    function computeBMI(){
-      const w = parseFloat(document.getElementById('bmi-weight').value);
-      const h = parseFloat(document.getElementById('bmi-height').value);
-      if(!w || !h) { setText('bmi-result','Enter valid weight and height'); return; }
-      const bmi = w / (h*h);
-      setText('bmi-result', 'BMI: ' + bmi.toFixed(2));
-    }
+  // SIP
+  function computeSIP(){
+    const m = parseFloat(document.getElementById('sip-monthly').value);
+    const annual = parseFloat(document.getElementById('sip-rate').value);
+    const years = parseFloat(document.getElementById('sip-years').value);
+    if(isNaN(m) || isNaN(annual) || isNaN(years)) return setText('sip-result','Enter monthly, rate and years');
+    const r = annual/100/12;
+    const n = years*12;
+    const fv = m * ((Math.pow(1+r,n)-1)/r) * (1+r);
+    setText('sip-result','Future: ' + fv.toFixed(2));
+  }
 
-    /* ---------------- GST ---------------- */
-    function computeGST(){
-      const amt = parseFloat(document.getElementById('gst-amount').value);
-      const rate = parseFloat(document.getElementById('gst-rate').value);
-      if(isNaN(amt) || isNaN(rate)) { setText('gst-result','Enter amount and rate'); return; }
-      const total = amt + (amt * rate / 100);
-      setText('gst-result', 'Total: ' + total.toFixed(2));
-    }
+  // Mortgage
+  function computeMortgage(){
+    const a = parseFloat(document.getElementById('mort-amount').value);
+    const annual = parseFloat(document.getElementById('mort-rate').value);
+    const years = parseFloat(document.getElementById('mort-years').value);
+    if(isNaN(a) || isNaN(annual) || isNaN(years)) return setText('mort-result','Enter valid values');
+    const r = annual/100/12;
+    const n = years*12;
+    const emi = a * r * (Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
+    setText('mort-result','Monthly EMI: ' + emi.toFixed(2));
+  }
 
-    /* ---------------- SIP ---------------- */
-    function computeSIP(){
-      const m = parseFloat(document.getElementById('sip-monthly').value);
-      const annual = parseFloat(document.getElementById('sip-rate').value);
-      const years = parseFloat(document.getElementById('sip-years').value);
-      if(isNaN(m) || isNaN(annual) || isNaN(years)) { setText('sip-result','Enter monthly, rate and years'); return; }
-      const r = annual / 100 / 12;
-      const n = years * 12;
-      const fv = m * ((Math.pow(1 + r, n) - 1) / r) * (1 + r);
-      setText('sip-result', 'Future value: ' + fv.toFixed(2));
-    }
+  // Tip
+  function computeTip(){
+    const bill = parseFloat(document.getElementById('tip-bill').value);
+    const pct = parseFloat(document.getElementById('tip-percent').value);
+    if(isNaN(bill) || isNaN(pct)) return setText('tip-result','Enter bill and tip %');
+    const total = bill + (bill * pct / 100);
+    setText('tip-result','Total: ' + total.toFixed(2));
+  }
 
-    /* ---------------- MORTGAGE ---------------- */
-    function computeMortgage(){
-      const loan = parseFloat(document.getElementById('mort-amount').value);
-      const annual = parseFloat(document.getElementById('mort-rate').value);
-      const years = parseFloat(document.getElementById('mort-years').value);
-      if(isNaN(loan) || isNaN(annual) || isNaN(years)) { setText('mort-result','Enter valid values'); return; }
-      const r = annual / 100 / 12;
-      const n = years * 12;
-      const emi = loan * r * (Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1));
-      setText('mort-result', 'Monthly EMI: ' + emi.toFixed(2));
-    }
-
-    /* ---------------- TIP ---------------- */
-    function computeTip(){
-      const bill = parseFloat(document.getElementById('tip-bill').value);
-      const pct = parseFloat(document.getElementById('tip-percent').value);
-      if(isNaN(bill) || isNaN(pct)) { setText('tip-result','Enter bill and tip %'); return; }
-      const total = bill + (bill * pct / 100);
-      setText('tip-result','Total: ' + total.toFixed(2));
-    }
-
-    /* ---------------- DISCOUNT ---------------- */
-    function computeDiscount(){
-      const price = parseFloat(document.getElementById('discount-price').value);
-      const pct = parseFloat(document.getElementById('discount-percent').value);
-      if(isNaN(price) || isNaN(pct)) { setText('discount-result','Enter price and discount %'); return; }
-      const final = price - (price * pct / 100);
-      setText('discount-result','Final price: ' + final.toFixed(2));
-    }
-
-    /* Accessibility & keyboard support: allow general numeric keys to go to basic input when not focused on other inputs */
-    document.addEventListener('keydown', (e) => {
-      const active = document.activeElement;
-      if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) return; // let native inputs handle keys
-      if(/^[0-9+\-*/(). ]$/.test(e.key)) {
-        basicInput.focus();
-        basicAdd(e.key);
-      }
-      if(e.key === 'Enter') {
-        basicEval();
-      }
-      if(e.key === 'Backspace') basicBack();
-    });
-  </script>
+  // Discount
+  function computeDiscount(){
+    const price = parseFloat(document.getElementById('discount-price').value);
+    const pct = parseFloat(document.getElementById('discount-percent').value);
+    if(isNaN(price) || isNaN(pct)) return setText('discount-result','Enter price and discount');
+    const final = price - (price * pct / 100);
+    setText('discount-result','Final Price: ' + final.toFixed(2));
+  }
+</script>
 </body>
 </html>
