@@ -6,9 +6,11 @@
   <title>Calculator By PirateRuler.com — Modern Calculator Suite</title>
   <meta name="description" content="Calculator By PirateRuler.com — modern suite of calculators: basic math, BMI, age, GST, SIP, mortgage, tip & discount. Private and fast." />
   <meta name="theme-color" content="#f7fbff" />
+  <!-- Inline tiny favicon (PR) -->
+  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect rx="14" width="64" height="64" fill="%236b7dff"/><text x="50%" y="50%" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="26" text-anchor="middle" alignment-baseline="central" fill="white">PR</text></svg>'>
   <style>
     /* -------------------------
-       Reset + base
+       Reset + base (mostly preserved)
        ------------------------- */
     :root{
       --bg:#f3f7fb; --card:#ffffff; --muted:#6b7480; --text:#0b2130;
@@ -18,24 +20,29 @@
       --shadow-lg: 0 18px 50px rgba(3,12,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
       --shadow-sm: 0 8px 24px rgba(3,12,30,0.08);
     }
-    html.dark { --bg:#071225; --card:#061028; --muted:#98a7bf; --text:#e9f1ff; --glass: rgba(255,255,255,0.02); --shadow-lg: 0 18px 50px rgba(0,0,0,0.6); --shadow-sm: 0 8px 24px rgba(0,0,0,0.45); }
+    /* added 2 extra theme palettes */
+    html.dark { --bg:#071225; --card:#061028; --muted:#98a7bf; --text:#e9f1ff; --glass: rgba(255,255,255,0.02); --shadow-lg: 0 18px 50px rgba(0,0,0,0.6); --shadow-sm: 0 8px 24px rgba(0,0,0,0.45); --accent-start:#5ab3ff; --accent-end:#6b7dff; }
+    html.ocean { --bg:#e8f7fb; --card:#ffffff; --muted:#4f6b75; --text:#063242; --glass: rgba(6,50,66,0.03); --accent-start:#00c2d1; --accent-end:#2b9fff; --shadow-lg: 0 18px 50px rgba(3,12,30,0.08); }
+    html.sunset { --bg:#fff6f8; --card:#fff; --muted:#7a6b77; --text:#2a1020; --glass: rgba(42,16,32,0.03); --accent-start:#ff7aa2; --accent-end:#ffb86b; --shadow-lg: 0 18px 50px rgba(50,10,20,0.06); }
+
     *{box-sizing:border-box}
     body{background:linear-gradient(180deg,var(--bg), #e9f6ff); font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:var(--text); margin:0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
     a{color:inherit;text-decoration:none}
-    .container{max-width:1100px;margin:18px auto;padding:18px;}
+    /* wider container for laptops, but limited */
+    .container{max-width:1280px;margin:14px auto;padding:18px;}
 
     /* -------------------------
-       Header
+       Header (minor tweaks for desktop)
        ------------------------- */
-    header.header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px; border-radius:14px; background:linear-gradient(90deg, rgba(107,125,255,0.07), rgba(11,179,255,0.03)); box-shadow:var(--shadow-sm); }
+    header.header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:14px; background:linear-gradient(90deg, rgba(107,125,255,0.06), rgba(11,179,255,0.02)); box-shadow:var(--shadow-sm); }
     .brand {display:flex; align-items:center; gap:12px;}
     .logo {
-      width:58px;height:58px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;
-      background:linear-gradient(135deg,var(--accent-start),var(--accent-end)); color:white; font-size:20px; box-shadow:0 8px 26px rgba(11,123,255,0.15);
+      width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;
+      background:linear-gradient(135deg,var(--accent-start),var(--accent-end)); color:white; font-size:20px; box-shadow:0 10px 30px rgba(11,123,255,0.12);
       flex-shrink:0;
     }
     .brand-title {line-height:1}
-    .brand-title .title-strong {font-size:20px;font-weight:800;margin:0}
+    .brand-title .title-strong {font-size:22px;font-weight:900;margin:0}
     .brand-title .by {font-size:12px;color:var(--muted); margin-top:3px}
     .header-actions {display:flex; gap:10px; align-items:center;}
     .btn {padding:9px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
@@ -43,11 +50,18 @@
     .btn.theme {background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white}
     .hamb { width:46px;height:46px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(0,0,0,0.04) }
 
+    /* theme selector dropdown (tiny) */
+    .theme-select { position:relative; }
+    .theme-list { position:absolute; right:0; top:48px; background:var(--card); border-radius:10px; box-shadow:var(--shadow-sm); padding:8px; display:none; min-width:140px; z-index:1000; }
+    .theme-list.open { display:block; }
+    .theme-item { padding:8px 10px; cursor:pointer; border-radius:8px; font-weight:700; color:var(--muted) }
+    .theme-item:hover{ background:linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.03)); color:var(--text) }
+
     /* -------------------------
        Sidebar (mobile & desktop)
        ------------------------- */
     .sidebar {
-      position:fixed; top:0; right:0; height:100vh; width:320px; max-width:94vw; transform:translateX(120%); transition:transform .28s cubic-bezier(.2,.9,.3,1); z-index:90;
+      position:fixed; top:0; right:0; height:100vh; width:360px; max-width:94vw; transform:translateX(120%); transition:transform .28s cubic-bezier(.2,.9,.3,1); z-index:90;
       background:var(--card); box-shadow: -40px 0 80px rgba(2,8,20,0.25);
       padding:20px; border-left:1px solid rgba(0,0,0,0.04); overflow:auto; border-radius:0 0 0 14px;
     }
@@ -59,20 +73,27 @@
     .backup{margin-top:18px;color:var(--muted);font-size:13px}
 
     /* -------------------------
-       Hero + tabs
+       Hero + tabs (reduce top/bottom spacing on wide screens)
        ------------------------- */
     .hero { margin-top:18px; padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96)); box-shadow:var(--shadow-lg); }
     html.dark .hero { background:linear-gradient(180deg, rgba(1,6,12,0.6), rgba(2,8,16,0.6)); }
+    @media(min-width:1100px){
+      .hero{ padding:36px 48px; }
+      .hero .big { font-size:42px; }
+      .brand-title .title-strong { font-size:24px; }
+    }
     .hero .big {font-size:34px;font-weight:900;margin:0;text-align:center}
-    .hero .small {text-align:center;color:var(--muted);margin-top:8px; max-width:820px;margin-left:auto;margin-right:auto}
+    .hero .small {text-align:center;color:var(--muted);margin-top:8px; max-width:960px;margin-left:auto;margin-right:auto}
     .tabs {display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:18px}
     .tab {padding:10px 16px;border-radius:999px;background:transparent;border:1px solid rgba(11,17,28,0.06); cursor:pointer; color:var(--muted); font-weight:700}
     .tab.active { background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; box-shadow:0 10px 30px rgba(11,107,255,0.12); transform:translateY(-4px); }
 
     /* -------------------------
-       Main cards area (grid)
+       Main area (grid) improved for wide screens
+       - right column narrower and sticky so it fills vertical space
+       - fewer large gaps
        ------------------------- */
-    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:18px; margin-top:18px; align-items:start; }
+    .grid { display:grid; grid-template-columns: 2fr 1fr; gap:18px; margin-top:18px; align-items:start; }
     @media (max-width:980px){ .grid{ grid-template-columns: 1fr } }
     .card { background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04); animation:cardIn .42s both}
     @keyframes cardIn { from { transform:translateY(8px); opacity:0 } to { transform:none; opacity:1 } }
@@ -96,22 +117,37 @@
     .key.eq { background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; box-shadow:0 10px 30px rgba(11,107,255,0.12) }
 
     /* -------------------------
-       Feature boxes (like your currency site cards)
+       Feature boxes: more boxes and arranged as 2 column stack on desktop
+       - made them denser so right column looks busy like mobile
        ------------------------- */
-    .features { display:grid; grid-template-columns: repeat(2,1fr); gap:12px; margin-top:18px; }
+    .features { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:18px; align-items:start; }
     @media (max-width:700px){ .features{ grid-template-columns:1fr } }
     .feature { display:flex; gap:14px; align-items:center; padding:14px; border-radius:12px; background:var(--card); box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04) }
     .f-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center; font-weight:800; color:white; background: linear-gradient(135deg,#8ee36b,#2bbf6f); }
     .f-title{font-weight:800}
     .f-desc{color:var(--muted); font-size:13px}
 
-    /* Footer */
-    footer { margin-top:28px; padding:22px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.96)); text-align:center; box-shadow:var(--shadow-lg) }
+    /* added small full-width mini-cards cluster to fill right column more naturally (desktop) */
+    .mini-cards { display:grid; gap:12px; margin-top:12px; grid-auto-rows: min-content; }
+    .mini { padding:12px; border-radius:12px; background:var(--card); box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04); display:flex; gap:12px; align-items:center; }
+    .mini .m-icon{ width:44px;height:44px;border-radius:10px; display:flex;align-items:center;justify-content:center; font-weight:800; color:white }
+    .mini .m-text{ font-weight:700; color:var(--text) }
+    .mini .m-sub{ color:var(--muted); font-size:13px }
+
+    /* Footer: make it a bit sleeker on wide screens */
+    footer { margin-top:22px; padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.96)); text-align:center; box-shadow:var(--shadow-lg) }
     .visit { padding:12px 20px; border-radius:999px; display:inline-block; background:linear-gradient(90deg,#ff7aa2 0%, #6b7dff 100%); color:white; font-weight:800; text-decoration:none }
 
     /* tiny helpers */
     .muted{color:var(--muted)}
     .spacer{height:8px}
+
+    /* small tweaks to remove large gaps on desktop */
+    @media(min-width:1000px){
+      main.grid{ margin-top:12px; gap:18px; }
+      .card { padding:20px; }
+      .hero { margin-bottom:10px; }
+    }
   </style>
 </head>
 <body>
@@ -130,7 +166,17 @@
       </div>
 
       <div class="header-actions" role="navigation" aria-label="Header controls">
-        <button id="themeBtn" class="btn theme" title="Toggle theme">Theme</button>
+        <!-- Theme selector: now a dropdown with multiple themes -->
+        <div class="theme-select" id="themeSelectWrap">
+          <button id="themeBtn" class="btn theme" title="Theme">Light</button>
+          <div id="themeList" class="theme-list" aria-hidden="true">
+            <div class="theme-item" data-theme="light">Light</div>
+            <div class="theme-item" data-theme="dark">Dark</div>
+            <div class="theme-item" data-theme="ocean">Ocean</div>
+            <div class="theme-item" data-theme="sunset">Sunset</div>
+          </div>
+        </div>
+
         <div class="hamb" id="hambBtn" title="Open menu" aria-haspopup="true" aria-controls="sidebar">☰</div>
       </div>
     </header>
@@ -271,7 +317,7 @@
 
         <!-- Tip -->
         <section id="tip" class="card" hidden>
-          <h2>Tip Calculator</h2>
+          <h2 id="tipTitle">Tip Calculator</h2>
           <div class="hint">Add tip percentage to bill.</div>
           <div class="row" style="margin-top:10px">
             <input id="tipBill" type="number" placeholder="Bill amount" />
@@ -300,11 +346,12 @@
         </section>
       </div>
 
-      <!-- RIGHT COLUMN: feature cards + sidebar placeholder -->
+      <!-- RIGHT COLUMN: feature cards + mini-cards cluster (fills vertical space better on laptop) -->
       <aside>
+        <!-- Larger feature grid (keeps same visuals but denser) -->
         <div class="features" aria-hidden="false">
           <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#6b7dff,#0bb3ff)">⚡</div>
+            <div class="f-icon" style="background:linear-gradient(135deg,var(--accent-start),var(--accent-end))">⚡</div>
             <div>
               <div class="f-title">Lightning fast</div>
               <div class="f-desc">Optimized code, minimal dependencies — instant results on mobile & desktop.</div>
@@ -342,14 +389,66 @@
               <div class="f-desc">Lightweight code you can fork and host — transparent and easy to customize.</div>
             </div>
           </div>
+
+          <!-- extra boxes to fill space on laptop -->
+          <div class="feature">
+            <div class="f-icon" style="background:linear-gradient(135deg,#7bd6ff,#6b7dff)">📱</div>
+            <div>
+              <div class="f-title">Mobile-first</div>
+              <div class="f-desc">Designed to look great on phones and convert smoothly to desktop.</div>
+            </div>
+          </div>
+
+          <div class="feature">
+            <div class="f-icon" style="background:linear-gradient(135deg,#ffd27a,#ff7aa2)">🧭</div>
+            <div>
+              <div class="f-title">Offline friendly</div>
+              <div class="f-desc">Many tools run fully client-side — perfect for privacy and offline use.</div>
+            </div>
+          </div>
         </div>
 
-        <div style="height:18px"></div>
+        <!-- mini cards cluster (fills right column vertically on laptop) -->
+        <div class="mini-cards" role="complementary" aria-label="Additional features">
+          <div class="mini">
+            <div class="m-icon" style="background:linear-gradient(135deg,#ff7aa2,#6b7dff)">⭐</div>
+            <div>
+              <div class="m-text">Top rated tools</div>
+              <div class="m-sub">Curated by usage & feedback — easy to find the essentials.</div>
+            </div>
+          </div>
+
+          <div class="mini">
+            <div class="m-icon" style="background:linear-gradient(135deg,#8ee36b,#2bbf6f)">🔁</div>
+            <div>
+              <div class="m-text">Quick toggles</div>
+              <div class="m-sub">Switch themes and open the navigation quickly for backups.</div>
+            </div>
+          </div>
+
+          <div class="mini">
+            <div class="m-icon" style="background:linear-gradient(135deg,#6b7dff,#0bb3ff)">📂</div>
+            <div>
+              <div class="m-text">Organized categories</div>
+              <div class="m-sub">Group tools into categories for large lists (100s+) with no APIs.</div>
+            </div>
+          </div>
+
+          <div class="mini">
+            <div class="m-icon" style="background:linear-gradient(135deg,#c471ed,#7bffdd)">🔐</div>
+            <div>
+              <div class="m-text">Privacy first</div>
+              <div class="m-sub">No tracking, minimal dependencies — everything runs client-side when possible.</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
 
         <!-- Quick privacy / about card (duplicate of sidebar) -->
         <div class="card" style="padding:16px">
           <div style="display:flex;gap:12px; align-items:center">
-            <div style="width:56px;height:56px;border-radius:12px; background:linear-gradient(135deg,#6b7dff,#0bb3ff); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">PR</div>
+            <div style="width:56px;height:56px;border-radius:12px; background:linear-gradient(135deg,var(--accent-start),var(--accent-end)); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">PR</div>
             <div>
               <div style="font-weight:800">Calculator By PirateRuler.com</div>
               <div class="muted" style="font-size:13px">Reliable tools · Private & fast</div>
@@ -398,57 +497,75 @@
     // set footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Theme handling: default to light on first load (per request), remembers in localStorage
+    // Theme handling: multi-theme (light, dark, ocean, sunset)
     const root = document.documentElement;
     const themeBtn = document.getElementById('themeBtn');
+    const themeList = document.getElementById('themeList');
+    const themeSelectWrap = document.getElementById('themeSelectWrap');
+
     function applyTheme(t){
+      // remove other theme classes
+      ['dark','ocean','sunset'].forEach(c=> root.classList.remove(c));
       if(t === 'dark'){ root.classList.add('dark'); localStorage.setItem('site-theme','dark'); themeBtn.textContent = 'Dark' }
-      else { root.classList.remove('dark'); localStorage.setItem('site-theme','light'); themeBtn.textContent = 'Light' }
+      else if(t === 'ocean'){ root.classList.add('ocean'); localStorage.setItem('site-theme','ocean'); themeBtn.textContent = 'Ocean' }
+      else if(t === 'sunset'){ root.classList.add('sunset'); localStorage.setItem('site-theme','sunset'); themeBtn.textContent = 'Sunset' }
+      else { localStorage.setItem('site-theme','light'); themeBtn.textContent = 'Light' }
     }
-    // Start default light unless user previously set
+
+    // load saved or default
     const saved = localStorage.getItem('site-theme');
     if(saved) applyTheme(saved); else applyTheme('light');
-    themeBtn.addEventListener('click', ()=> applyTheme(root.classList.contains('dark') ? 'light' : 'dark'));
 
-    // Sidebar open/close
+    // theme dropdown toggle + click handler
+    themeBtn.addEventListener('click', e => {
+      themeList.classList.toggle('open');
+      themeList.setAttribute('aria-hidden', String(!themeList.classList.contains('open')));
+    });
+    themeList.addEventListener('click', e => {
+      const t = e.target.closest('.theme-item');
+      if(!t) return;
+      applyTheme(t.dataset.theme);
+      themeList.classList.remove('open');
+      themeList.setAttribute('aria-hidden','true');
+    });
+    // close on outside click
+    document.addEventListener('click', e => {
+      if(!themeSelectWrap.contains(e.target)) { themeList.classList.remove('open'); themeList.setAttribute('aria-hidden','true'); }
+    });
+
+    // Sidebar open/close (no changes)
     const sidebar = document.getElementById('sidebar');
     const hambBtn = document.getElementById('hambBtn');
     const closeSidebar = document.getElementById('closeSidebar');
     function openSidebar(){
       sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false');
-      // push focus to close button
       closeSidebar.focus();
     }
     function closeSB(){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); }
     hambBtn.addEventListener('click', openSidebar);
     closeSidebar.addEventListener('click', closeSB);
-    // close on escape
     document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSB(); });
 
-    // Tabs logic
+    // Tabs logic (unchanged except small scroll tuning)
     const tabs = Array.from(document.querySelectorAll('.tab'));
     function showTab(id){
-      // hide all sections inside main (cards)
       document.querySelectorAll('main section.card').forEach(s => s.hidden = true);
       const el = document.getElementById(id);
       if(el) el.hidden = false;
       tabs.forEach(t => t.classList.toggle('active', t.dataset.target === id));
-      // scroll the chosen card into view smoothly for mobile devices
       setTimeout(()=> {
         const rect = el && el.getBoundingClientRect();
         if(rect) window.scrollTo({top: window.scrollY + rect.top - 80, behavior:'smooth'});
-      }, 80);
+      }, 70);
     }
     tabs.forEach(t => t.addEventListener('click', ()=> showTab(t.dataset.target)));
-    // default
     showTab('basic');
 
-    // SAFE eval helpers for basic calculator
+    // Calculator helpers (unchanged logic)
     let expr = '';
     const display = document.getElementById('basicDisplay');
     function setText(id,val){ const el=document.getElementById(id); if(el) el.textContent = val; }
     function basicAdd(v){
-      // prevent initial 0 problems
       if(display.value === '0' && v !== '.' ) display.value = '';
       expr = display.value + v;
       display.value = expr;
@@ -457,10 +574,8 @@
     function basicBack(){ expr = display.value.slice(0,-1); display.value = expr || '0'; }
     function basicEval(){
       if(!display.value) return;
-      // allow only digits, operators and parentheses
       const safe = display.value.replace(/[^0-9+\-*/().% ]/g,'');
       try {
-        // use Function to avoid eval globals; still careful
         const res = Function('"use strict";return ('+safe+')')();
         setText('basicRes', isFinite(res) ? 'Result: ' + res : 'Invalid');
         display.value = String(res);
@@ -468,15 +583,14 @@
         setText('basicRes','Invalid expression');
       }
     }
-    // keyboard support
     document.addEventListener('keydown', (e) => {
-      if(document.activeElement && (document.activeElement.tagName === 'INPUT')) return; // ignore when typing
+      if(document.activeElement && (document.activeElement.tagName === 'INPUT')) return;
       if(/^[0-9+\-*/().%]$/.test(e.key)) basicAdd(e.key);
       if(e.key === 'Enter') basicEval();
       if(e.key === 'Backspace') basicBack();
     });
 
-    // calculator functions (age, bmi, gst, sip, mortar, tip, discount)
+    // calculators (unchanged code)
     function computeAge(){
       const v = document.getElementById('dob').value;
       if(!v) return setText('ageRes','Please select birthday');
@@ -543,17 +657,18 @@
       setText('discRes','Final: ' + f.toFixed(2));
     }
 
-    // small UX: close sidebar on outside click (mobile)
+    // UX: close sidebar on outside click
     document.addEventListener('click', function(e){
       if(!sidebar.classList.contains('open')) return;
       const inside = sidebar.contains(e.target) || hambBtn.contains(e.target);
       if(!inside) closeSB();
     });
 
-    // Improve sidebar fit on small screens (make sure it uses max-width)
+    // responsive sidebar width
     function updateSidebarWidth(){
       if(window.innerWidth < 420) sidebar.style.width = '94vw';
-      else sidebar.style.width = '320px';
+      else if(window.innerWidth < 900) sidebar.style.width = '360px';
+      else sidebar.style.width = '360px';
     }
     window.addEventListener('resize', updateSidebarWidth);
     updateSidebarWidth();
