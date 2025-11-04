@@ -1,644 +1,412 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Calculator By PirateRuler.com — Modern Calculator Suite</title>
-  <meta name="description" content="Calculator By PirateRuler.com — modern suite of calculators: basic math, BMI, age, GST, SIP, mortgage, tip & discount. Private and fast." />
-  <meta name="theme-color" content="#f7fbff" />
-  <!-- Inline tiny favicon (PR) -->
-  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect rx="14" width="64" height="64" fill="%236b7dff"/><text x="50%" y="50%" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="26" text-anchor="middle" alignment-baseline="central" fill="white">PR</text></svg>'>
-  <style>
-    /* -------------------------
-       Reset + base (preserve look)
-       ------------------------- */
-    :root{
-      --bg:#f3f7fb; --card:#ffffff; --muted:#6b7480; --text:#0b2130;
-      --accent-start:#6b7dff; --accent-end:#0bb3ff;
-      --glass: rgba(11,17,28,0.04);
-      --radius:14px;
-      --shadow-lg: 0 18px 50px rgba(3,12,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
-      --shadow-sm: 0 8px 24px rgba(3,12,30,0.08);
-    }
-    /* themes */
-    html.dark { --bg:#071225; --card:#061028; --muted:#98a7bf; --text:#e9f1ff; --glass: rgba(255,255,255,0.02); --shadow-lg: 0 18px 50px rgba(0,0,0,0.6); --shadow-sm: 0 8px 24px rgba(0,0,0,0.45); --accent-start:#5ab3ff; --accent-end:#6b7dff; }
-    html.ocean { --bg:#e8f7fb; --card:#ffffff; --muted:#4f6b75; --text:#063242; --glass: rgba(6,50,66,0.03); --accent-start:#00c2d1; --accent-end:#2b9fff; --shadow-lg: 0 18px 50px rgba(3,12,30,0.08); }
-    html.sunset { --bg:#fff6f8; --card:#fff; --muted:#7a6b77; --text:#2a1020; --glass: rgba(42,16,32,0.03); --accent-start:#ff7aa2; --accent-end:#ffb86b; --shadow-lg: 0 18px 50px rgba(50,10,20,0.06); }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Calculator By PirateRuler.com — Modern Calculator Suite</title>
+<meta name="description" content="Calculator By PirateRuler.com — modern suite of calculators: basic math, BMI, age, GST, SIP, mortgage, tip & discount. Private and fast." />
+<meta name="theme-color" content="#f7fbff" />
+<link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"><rect rx="14" width="64" height="64" fill="%236b7dff"/><text x="50%" y="50%" font-family="Inter,Arial,sans-serif" font-weight="800" font-size="26" text-anchor="middle" alignment-baseline="central" fill="white">PR</text></svg>'>
+<style>
+  :root{
+    --bg:#f3f7fb; --card:#ffffff; --muted:#6b7480; --text:#0b2130;
+    --accent-start:#6b7dff; --accent-end:#0bb3ff;
+    --glass: rgba(11,17,28,0.04);
+    --radius:14px;
+    --shadow-lg: 0 18px 50px rgba(3,12,30,0.18), inset 0 1px 0 rgba(255,255,255,0.6);
+    --shadow-sm: 0 8px 24px rgba(3,12,30,0.08);
+  }
+  html.dark { --bg:#071225; --card:#061028; --muted:#98a7bf; --text:#e9f1ff; --glass: rgba(255,255,255,0.02); --shadow-lg: 0 18px 50px rgba(0,0,0,0.6); --shadow-sm: 0 8px 24px rgba(0,0,0,0.45); --accent-start:#5ab3ff; --accent-end:#6b7dff; }
+  html.ocean { --bg:#e8f7fb; --card:#ffffff; --muted:#4f6b75; --text:#063242; --glass: rgba(6,50,66,0.03); --accent-start:#00c2d1; --accent-end:#2b9fff; --shadow-lg: 0 18px 50px rgba(3,12,30,0.08); }
+  html.sunset { --bg:#fff6f8; --card:#fff; --muted:#7a6b77; --text:#2a1020; --glass: rgba(42,16,32,0.03); --accent-start:#ff7aa2; --accent-end:#ffb86b; --shadow-lg: 0 18px 50px rgba(50,10,20,0.06); }
 
-    *{box-sizing:border-box}
-    body{background:linear-gradient(180deg,var(--bg), #e9f6ff); font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:var(--text); margin:0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1280px;margin:14px auto;padding:18px;}
+  *{box-sizing:border-box}
+  body{background:linear-gradient(180deg,var(--bg), #e9f6ff); font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; color:var(--text); margin:0}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1280px;margin:14px auto;padding:18px;}
 
-    /* header */
-    header.header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px; border-radius:14px; background:linear-gradient(90deg, rgba(107,125,255,0.06), rgba(11,179,255,0.02)); box-shadow:var(--shadow-sm); }
-    .brand {display:flex; align-items:center; gap:12px;}
-    .logo { width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800; background:linear-gradient(135deg,var(--accent-start),var(--accent-end)); color:white; font-size:20px; box-shadow:0 10px 30px rgba(11,123,255,0.12); flex-shrink:0; }
-    .brand-title {line-height:1}
-    .brand-title .title-strong {font-size:22px;font-weight:900;margin:0}
-    .brand-title .by {font-size:12px;color:var(--muted); margin-top:3px}
-    .header-actions {display:flex; gap:10px; align-items:center;}
-    .btn {padding:9px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
-    .btn.ghost {background:transparent;border:1px solid rgba(0,0,0,0.06); color:var(--text);}
-    .btn.theme {background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white}
-    .hamb { width:46px;height:46px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid rgba(0,0,0,0.04) }
+  /* header */
+  header.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border-radius:14px;background:linear-gradient(90deg, rgba(107,125,255,0.06), rgba(11,179,255,0.02));box-shadow:var(--shadow-sm)}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;background:linear-gradient(135deg,var(--accent-start),var(--accent-end));color:#fff;box-shadow:0 10px 30px rgba(11,123,255,.12)}
+  .brand-title .title-strong{font-size:22px;font-weight:900;margin:0}
+  .brand-title .by{font-size:12px;color:var(--muted);margin-top:3px}
+  .header-actions{display:flex;gap:10px;align-items:center}
+  .btn{padding:9px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+  .btn.theme{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:#fff}
+  .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06)}
+  .hamb{width:46px;height:46px;border-radius:10px;background:var(--glass);display:flex;align-items:center;justify-content:center;border:1px solid rgba(0,0,0,.04)}
 
-    /* theme dropdown */
-    .theme-select { position:relative; }
-    .theme-list { position:absolute; right:0; top:48px; background:var(--card); border-radius:10px; box-shadow:var(--shadow-sm); padding:8px; display:none; min-width:140px; z-index:1000; }
-    .theme-list.open { display:block; }
-    .theme-item { padding:8px 10px; cursor:pointer; border-radius:8px; font-weight:700; color:var(--muted) }
-    .theme-item:hover{ background:linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.03)); color:var(--text) }
+  /* theme dropdown */
+  .theme-select{position:relative}
+  .theme-list{position:absolute;right:0;top:48px;background:var(--card);border-radius:10px;box-shadow:var(--shadow-sm);padding:8px;display:none;min-width:140px;z-index:1000}
+  .theme-list.open{display:block}
+  .theme-item{padding:8px 10px;border-radius:8px;cursor:pointer;font-weight:700;color:var(--muted)}
+  .theme-item:hover{background:linear-gradient(90deg,rgba(0,0,0,.02),rgba(0,0,0,.03));color:var(--text)}
 
-    /* sidebar */
-    .sidebar { position:fixed; top:0; right:0; height:100vh; width:360px; max-width:94vw; transform:translateX(120%); transition:transform .28s cubic-bezier(.2,.9,.3,1); z-index:90; background:var(--card); box-shadow: -40px 0 80px rgba(2,8,20,0.25); padding:20px; border-left:1px solid rgba(0,0,0,0.04); overflow:auto; border-radius:0 0 0 14px; }
-    .sidebar.open { transform:translateX(0); }
-    .sidebar .close { display:flex; justify-content:flex-end }
-    .sidebar h3{margin:0 0 6px 0;font-size:16px}
-    .nav-list{margin-top:10px; display:flex; flex-direction:column; gap:12px}
-    .nav-list a{display:block;padding:14px;border-radius:10px;background:linear-gradient(180deg, rgba(0,0,0,0.01), rgba(0,0,0,0.02)); color:var(--text); font-weight:600}
-    .backup{margin-top:18px;color:var(--muted);font-size:13px}
+  /* hero */
+  .hero{margin-top:18px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,.98), rgba(255,255,255,.96));box-shadow:var(--shadow-lg)}
+  html.dark .hero{background:linear-gradient(180deg, rgba(1,6,12,.6), rgba(2,8,16,.6))}
+  @media(min-width:1100px){.hero{padding:36px 48px}.hero .big{font-size:42px}}
+  .hero .big{font-size:34px;font-weight:900;margin:0;text-align:center}
+  .hero .small{text-align:center;color:var(--muted);margin-top:8px;max-width:960px;margin-inline:auto}
+  .tabs{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+  .tab{padding:10px 16px;border-radius:999px;border:1px solid rgba(11,17,28,.06);cursor:pointer;color:var(--muted);font-weight:700;background:transparent}
+  .tab.active{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:#fff;box-shadow:0 10px 30px rgba(11,107,255,.12);transform:translateY(-4px)}
 
-    /* hero & tabs */
-    .hero { margin-top:18px; padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96)); box-shadow:var(--shadow-lg); }
-    html.dark .hero { background:linear-gradient(180deg, rgba(1,6,12,0.6), rgba(2,8,16,0.6)); }
-    @media(min-width:1100px){ .hero{ padding:36px 48px; } .hero .big { font-size:42px; } .brand-title .title-strong { font-size:24px; } }
-    .hero .big {font-size:34px;font-weight:900;margin:0;text-align:center}
-    .hero .small {text-align:center;color:var(--muted);margin-top:8px; max-width:960px;margin-left:auto;margin-right:auto}
-    .tabs {display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:18px}
-    .tab {padding:10px 16px;border-radius:999px;background:transparent;border:1px solid rgba(11,17,28,0.06); cursor:pointer; color:var(--muted); font-weight:700}
-    .tab.active { background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; box-shadow:0 10px 30px rgba(11,107,255,0.12); transform:translateY(-4px); }
+  /* 🔥 ticker (scrolling) */
+  .ticker-wrap{margin-top:12px;border-radius:12px;overflow:hidden;background:linear-gradient(90deg,rgba(0,0,0,.03),rgba(0,0,0,.04));border:1px solid rgba(0,0,0,.05)}
+  .ticker{display:flex;gap:28px;white-space:nowrap;animation:slide 24s linear infinite;padding:10px 14px;font-weight:700;color:var(--muted)}
+  .ticker span{display:inline-flex;align-items:center;gap:10px}
+  .ticker b{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));-webkit-background-clip:text;background-clip:text;color:transparent}
+  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    /* main grid: tighter and right column sticky to avoid big blank spaces */
-    .grid { display:grid; grid-template-columns: 2fr 1fr; gap:18px; margin-top:12px; align-items:start; }
-    @media (max-width:980px){ .grid{ grid-template-columns: 1fr } }
-    .card { background:var(--card); border-radius:14px; padding:18px; box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04); animation:cardIn .42s both}
-    @keyframes cardIn { from { transform:translateY(8px); opacity:0 } to { transform:none; opacity:1 } }
-    .card h2{margin:0 0 8px 0;font-size:18px}
-    .hint{color:var(--muted); font-size:13px; margin-bottom:10px}
+  /* main grid */
+  .grid{display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-top:12px;align-items:start}
+  @media(max-width:980px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--card);border-radius:14px;padding:18px;box-shadow:var(--shadow-sm);border:1px solid rgba(0,0,0,.04);animation:cardIn .42s both}
+  @keyframes cardIn{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+  .card h2{margin:0 0 8px 0;font-size:18px}
+  .hint{color:var(--muted);font-size:13px;margin-bottom:10px}
+  input[type="text"],input[type="number"],input[type="date"],select{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(10,20,40,.06);font-size:15px;background:transparent;color:var(--text)}
+  .row{display:flex;gap:10px}
+  .primary{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:#fff;padding:9px 14px;border-radius:10px;border:none;font-weight:800;cursor:pointer}
+  .ghost{background:transparent;border:1px solid rgba(0,0,0,.06);padding:9px 12px;border-radius:10px;cursor:pointer}
+  .result{margin-top:12px;font-weight:800;color:#0b8a66}
+  html.dark .result{color:#57f0b6}
+  .key-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}
+  .key{padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.01));border:1px solid rgba(0,0,0,.04);font-weight:700;cursor:pointer;text-align:center}
+  .key.op{background:transparent;color:var(--muted)}
+  .key.eq{background:linear-gradient(90deg,var(--accent-start),var(--accent-end));color:#fff;box-shadow:0 10px 30px rgba(11,107,255,.12)}
 
-    input[type="text"], input[type="number"], input[type="date"], select { width:100%; padding:12px;border-radius:10px;border:1px solid rgba(10,20,40,0.06); font-size:15px; background:transparent; color:var(--text) }
-    .row {display:flex; gap:10px}
-    .primary { background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; padding:9px 14px; border-radius:10px; border:none; font-weight:800; cursor:pointer }
-    .ghost { background:transparent; border:1px solid rgba(0,0,0,0.06); padding:9px 12px;border-radius:10px; cursor:pointer }
+  /* RIGHT: 6 equal boxes (same height) */
+  .features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:0;align-items:stretch;grid-auto-rows:1fr}
+  @media(max-width:700px){.features{grid-template-columns:1fr}}
+  .feature{display:flex;gap:14px;align-items:center;padding:14px;border-radius:12px;background:var(--card);box-shadow:var(--shadow-sm);border:1px solid rgba(0,0,0,.04);height:100%}
+  .f-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;background:linear-gradient(135deg,#8ee36b,#2bbf6f)}
+  .f-title{font-weight:800}
+  .f-desc{color:var(--muted);font-size:13px}
 
-    .result { margin-top:12px; font-weight:800; color:#0b8a66 }
-    html.dark .result { color:#57f0b6 }
+  /* keep aside natural height (no forced sticky height) to avoid extra bottom space */
+  aside{align-self:start}
 
-    /* keypad */
-    .key-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:9px; margin-top:12px; }
-    .key { padding:14px; border-radius:12px; background:linear-gradient(180deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01)); border:1px solid rgba(0,0,0,0.04); font-weight:700; cursor:pointer; text-align:center }
-    .key.op { background:transparent; color:var(--muted) }
-    .key.eq { background:linear-gradient(90deg,var(--accent-start),var(--accent-end)); color:white; box-shadow:0 10px 30px rgba(11,107,255,0.12) }
+  /* footer – pull up a bit so there’s no blank gap under left column */
+  footer{margin-top:16px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.96));text-align:center;box-shadow:var(--shadow-lg)}
+  .visit{padding:12px 20px;border-radius:999px;display:inline-block;background:linear-gradient(90deg,#ff7aa2 0%, #6b7dff 100%);color:#fff;font-weight:800;text-decoration:none}
 
-    /* features area — exactly 6 features + 4 mini cards = 10 boxes total */
-    .features { display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:18px; align-items:start; }
-    @media (max-width:700px){ .features{ grid-template-columns:1fr } }
-    .feature { display:flex; gap:14px; align-items:center; padding:14px; border-radius:12px; background:var(--card); box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04) }
-    .f-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center; font-weight:800; color:white; background: linear-gradient(135deg,#8ee36b,#2bbf6f); }
-    .f-title{font-weight:800}
-    .f-desc{color:var(--muted); font-size:13px}
-
-    /* mini cards cluster (4 boxes) to fill right column vertically */
-    .mini-cards { display:grid; gap:12px; margin-top:12px; grid-auto-rows: min-content; }
-    .mini { padding:12px; border-radius:12px; background:var(--card); box-shadow:var(--shadow-sm); border:1px solid rgba(0,0,0,0.04); display:flex; gap:12px; align-items:center; }
-    .mini .m-icon{ width:44px;height:44px;border-radius:10px; display:flex;align-items:center;justify-content:center; font-weight:800; color:white }
-    .mini .m-text{ font-weight:700; color:var(--text) }
-    .mini .m-sub{ color:var(--muted); font-size:13px }
-
-    /* make right column sticky to top so it fills the vertical space next to calculator */
-    aside { align-self:start; position:relative; }
-    @media(min-width:981px){
-      aside { position:sticky; top:18px; height:calc(100vh - 36px); overflow:auto; padding-right:6px; }
-    }
-
-    /* footer */
-    footer { margin-top:22px; padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.96)); text-align:center; box-shadow:var(--shadow-lg) }
-    .visit { padding:12px 20px; border-radius:999px; display:inline-block; background:linear-gradient(90deg,#ff7aa2 0%, #6b7dff 100%); color:white; font-weight:800; text-decoration:none }
-
-    /* helpers */
-    .muted{color:var(--muted)}
-    .spacer{height:8px}
-
-    /* tighten up gaps on wide screens */
-    @media(min-width:1000px){
-      main.grid{ margin-top:10px; gap:18px; }
-      .card { padding:18px; }
-      .hero { margin-bottom:6px; }
-    }
-  </style>
+  .muted{color:var(--muted)}
+  @media(min-width:1000px){
+    main.grid{gap:18px}
+    .card{padding:18px}
+    .hero{margin-bottom:8px}
+  }
+</style>
 </head>
 <body>
-  <div class="container">
+<div class="container">
 
-    <!-- Header -->
-    <header class="header" role="banner" aria-label="Site header">
-      <div class="brand">
-        <a href="/" aria-label="Home" style="display:flex; align-items:center; gap:12px">
-          <div class="logo" aria-hidden="true">PR</div>
-          <div class="brand-title">
-            <div class="title-strong">Calculator</div>
-            <div class="by">by PirateRuler.com</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="header-actions" role="navigation" aria-label="Header controls">
-        <!-- Theme selector dropdown -->
-        <div class="theme-select" id="themeSelectWrap">
-          <button id="themeBtn" class="btn theme" title="Theme">Ocean</button>
-          <div id="themeList" class="theme-list" aria-hidden="true">
-            <div class="theme-item" data-theme="light">Light</div>
-            <div class="theme-item" data-theme="dark">Dark</div>
-            <div class="theme-item" data-theme="ocean">Ocean</div>
-            <div class="theme-item" data-theme="sunset">Sunset</div>
-          </div>
+  <!-- Header -->
+  <header class="header" role="banner" aria-label="Site header">
+    <div class="brand">
+      <a href="/" aria-label="Home" style="display:flex;align-items:center;gap:12px">
+        <div class="logo" aria-hidden="true">PR</div>
+        <div class="brand-title">
+          <div class="title-strong">Calculator</div>
+          <div class="by">by PirateRuler.com</div>
         </div>
+      </a>
+    </div>
 
-        <div class="hamb" id="hambBtn" title="Open menu" aria-haspopup="true" aria-controls="sidebar">☰</div>
-      </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero" aria-labelledby="heroTitle">
-      <h1 id="heroTitle" class="big">All-in-one Modern Calculator Suite</h1>
-      <p class="small">Fast, privacy-first calculators: basic math, BMI, age, GST, SIP, mortgage, tip and discount — simple and reliable. (Currency tools live separately on PirateRuler currency site.)</p>
-
-      <div class="tabs" role="tablist" aria-label="Calculator tabs">
-        <button class="tab active" data-target="basic" role="tab">Basic</button>
-        <button class="tab" data-target="age" role="tab">Age</button>
-        <button class="tab" data-target="bmi" role="tab">BMI</button>
-        <button class="tab" data-target="gst" role="tab">GST</button>
-        <button class="tab" data-target="sip" role="tab">SIP</button>
-        <button class="tab" data-target="mortgage" role="tab">Mortgage</button>
-        <button class="tab" data-target="tip" role="tab">Tip</button>
-        <button class="tab" data-target="discount" role="tab">Discount</button>
-      </div>
-    </section>
-
-    <!-- MAIN GRID -->
-    <main class="grid" role="main">
-
-      <!-- LEFT: calculators -->
-      <div>
-        <!-- Basic -->
-        <section id="basic" class="card" aria-labelledby="basicTitle">
-          <h2 id="basicTitle">Basic Calculator</h2>
-          <div class="hint">Use keypad or type on your keyboard. Supports + - × ÷ ( ) and decimals.</div>
-          <input id="basicDisplay" type="text" value="0" aria-label="Calculator display" />
-          <div class="key-grid" style="margin-top:12px">
-            <div class="key" onclick="basicAdd('7')">7</div>
-            <div class="key" onclick="basicAdd('8')">8</div>
-            <div class="key" onclick="basicAdd('9')">9</div>
-            <div class="key op" onclick="basicAdd('/')">÷</div>
-
-            <div class="key" onclick="basicAdd('4')">4</div>
-            <div class="key" onclick="basicAdd('5')">5</div>
-            <div class="key" onclick="basicAdd('6')">6</div>
-            <div class="key op" onclick="basicAdd('*')">×</div>
-
-            <div class="key" onclick="basicAdd('1')">1</div>
-            <div class="key" onclick="basicAdd('2')">2</div>
-            <div class="key" onclick="basicAdd('3')">3</div>
-            <div class="key op" onclick="basicAdd('-')">−</div>
-
-            <div class="key" onclick="basicAdd('0')">0</div>
-            <div class="key" onclick="basicAdd('.')">.</div>
-            <div class="key eq" onclick="basicEval()">=</div>
-            <div class="key op" onclick="basicAdd('+')">+</div>
-
-            <div class="key" style="grid-column:span 2" onclick="basicClear()">Clear</div>
-            <div class="key" style="grid-column:span 2" onclick="basicBack()">Back</div>
-          </div>
-          <div id="basicRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- Age -->
-        <section id="age" class="card" hidden aria-labelledby="ageTitle">
-          <h2 id="ageTitle">Age Calculator</h2>
-          <div class="hint">Calculate years, months and days from birthday.</div>
-          <input id="dob" type="date" aria-label="Date of birth" />
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeAge()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('dob').value=''; setText('ageRes','')">Clear</button>
-          </div>
-          <div id="ageRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- BMI -->
-        <section id="bmi" class="card" hidden aria-labelledby="bmiTitle">
-          <h2 id="bmiTitle">BMI Calculator</h2>
-          <div class="hint">Enter weight (kg) and height (m).</div>
-          <div class="row" style="margin-top:10px">
-            <input id="bmiW" type="number" placeholder="Weight (kg)" />
-            <input id="bmiH" type="number" placeholder="Height (m)" step="0.01" />
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeBMI()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('bmiW').value=''; document.getElementById('bmiH').value=''; setText('bmiRes','')">Clear</button>
-          </div>
-          <div id="bmiRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- GST -->
-        <section id="gst" class="card" hidden>
-          <h2>GST Calculator</h2>
-          <div class="hint">Compute total with GST percent.</div>
-          <div class="row" style="margin-top:10px">
-            <input id="gstAmt" type="number" placeholder="Amount" />
-            <input id="gstRate" type="number" placeholder="GST %" />
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeGST()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('gstAmt').value='';document.getElementById('gstRate').value=''; setText('gstRes','')">Clear</button>
-          </div>
-          <div id="gstRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- SIP -->
-        <section id="sip" class="card" hidden>
-          <h2>SIP Calculator</h2>
-          <div class="hint">Monthly invest, annual rate (%), years.</div>
-          <div class="row" style="margin-top:10px">
-            <input id="sipM" type="number" placeholder="Monthly invest" />
-            <input id="sipR" type="number" placeholder="Rate (%)" />
-          </div>
-          <div class="row" style="margin-top:10px">
-            <input id="sipY" type="number" placeholder="Years" />
-            <div></div>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeSIP()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('sipM').value='';document.getElementById('sipR').value='';document.getElementById('sipY').value=''; setText('sipRes','')">Clear</button>
-          </div>
-          <div id="sipRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- Mortgage -->
-        <section id="mortgage" class="card" hidden>
-          <h2>Mortgage Calculator</h2>
-          <div class="hint">Loan amount, annual interest (%) and years.</div>
-          <div class="row" style="margin-top:10px">
-            <input id="mortA" type="number" placeholder="Loan amount" />
-            <input id="mortR" type="number" placeholder="Annual rate (%)" />
-          </div>
-          <div class="row" style="margin-top:10px">
-            <input id="mortY" type="number" placeholder="Years" />
-            <div></div>
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeMort()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('mortA').value='';document.getElementById('mortR').value='';document.getElementById('mortY').value=''; setText('mortRes','')">Clear</button>
-          </div>
-          <div id="mortRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- Tip -->
-        <section id="tip" class="card" hidden>
-          <h2 id="tipTitle">Tip Calculator</h2>
-          <div class="hint">Add tip percentage to bill.</div>
-          <div class="row" style="margin-top:10px">
-            <input id="tipBill" type="number" placeholder="Bill amount" />
-            <input id="tipPct" type="number" placeholder="Tip %" />
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeTip()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('tipBill').value='';document.getElementById('tipPct').value=''; setText('tipRes','')">Clear</button>
-          </div>
-          <div id="tipRes" class="result" aria-live="polite"></div>
-        </section>
-
-        <!-- Discount -->
-        <section id="discount" class="card" hidden>
-          <h2>Discount Calculator</h2>
-          <div class="hint">Final price after percentage discount.</div>
-          <div class="row" style="margin-top:10px">
-            <input id="discPrice" type="number" placeholder="Original price" />
-            <input id="discPct" type="number" placeholder="Discount %" />
-          </div>
-          <div style="display:flex;gap:10px;margin-top:12px">
-            <button class="primary" onclick="computeDisc()">Calculate</button>
-            <button class="ghost" onclick="document.getElementById('discPrice').value='';document.getElementById('discPct').value=''; setText('discRes','')">Clear</button>
-          </div>
-          <div id="discRes" class="result" aria-live="polite"></div>
-        </section>
-      </div>
-
-      <!-- RIGHT: features + mini cards (exactly 10 boxes total) -->
-      <aside>
-        <div class="features" aria-hidden="false">
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,var(--accent-start),var(--accent-end))">⚡</div>
-            <div>
-              <div class="f-title">Lightning fast</div>
-              <div class="f-desc">Optimized code, minimal dependencies — instant results on mobile & desktop.</div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#8ee36b,#2bbf6f)">🔒</div>
-            <div>
-              <div class="f-title">Private by design</div>
-              <div class="f-desc">No personal data is stored — calculations run in your browser by default.</div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#ffb86b,#ff6b7a)">🧰</div>
-            <div>
-              <div class="f-title">All tools in one</div>
-              <div class="f-desc">Basic math, BMI, age, GST, SIP, mortgage, tip, discount — ready to use.</div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#c471ed,#7bffdd)">🌐</div>
-            <div>
-              <div class="f-title">Backup resources</div>
-              <div class="f-desc">If this site is offline, visit Pirateruler.com for backups & resources.</div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#ff7aa2,#6b7dff)">🔧</div>
-            <div>
-              <div class="f-title">Developer friendly</div>
-              <div class="f-desc">Lightweight code you can fork and host — transparent and easy to customize.</div>
-            </div>
-          </div>
-
-          <div class="feature">
-            <div class="f-icon" style="background:linear-gradient(135deg,#7bd6ff,#6b7dff)">📱</div>
-            <div>
-              <div class="f-title">Mobile-first</div>
-              <div class="f-desc">Designed to look great on phones and convert smoothly to desktop.</div>
-            </div>
-          </div>
+    <div class="header-actions" role="navigation" aria-label="Header controls">
+      <div class="theme-select" id="themeSelectWrap">
+        <button id="themeBtn" class="btn theme" title="Theme">Ocean</button>
+        <div id="themeList" class="theme-list" aria-hidden="true">
+          <div class="theme-item" data-theme="light">Light</div>
+          <div class="theme-item" data-theme="dark">Dark</div>
+          <div class="theme-item" data-theme="ocean">Ocean</div>
+          <div class="theme-item" data-theme="sunset">Sunset</div>
         </div>
+      </div>
+      <div class="hamb" id="hambBtn" title="Open menu" aria-haspopup="true" aria-controls="sidebar">☰</div>
+    </div>
+  </header>
 
-        <!-- 4 mini cards -->
-        <div class="mini-cards" role="complementary" aria-label="Additional features">
-          <div class="mini">
-            <div class="m-icon" style="background:linear-gradient(135deg,#ff7aa2,#6b7dff)">⭐</div>
-            <div>
-              <div class="m-text">Top rated tools</div>
-              <div class="m-sub">Curated by usage & feedback — easy to find the essentials.</div>
-            </div>
-          </div>
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="heroTitle">
+    <h1 id="heroTitle" class="big">All-in-one Modern Calculator Suite</h1>
+    <p class="small">Fast, privacy-first calculators: basic math, BMI, age, GST, SIP, mortgage, tip and discount — simple and reliable. (Currency tools live separately on PirateRuler currency site.)</p>
 
-          <div class="mini">
-            <div class="m-icon" style="background:linear-gradient(135deg,#8ee36b,#2bbf6f)">🔁</div>
-            <div>
-              <div class="m-text">Quick toggles</div>
-              <div class="m-sub">Switch themes and open the navigation quickly for backups.</div>
-            </div>
-          </div>
+    <div class="tabs" role="tablist" aria-label="Calculator tabs">
+      <button class="tab active" data-target="basic" role="tab">Basic</button>
+      <button class="tab" data-target="age" role="tab">Age</button>
+      <button class="tab" data-target="bmi" role="tab">BMI</button>
+      <button class="tab" data-target="gst" role="tab">GST</button>
+      <button class="tab" data-target="sip" role="tab">SIP</button>
+      <button class="tab" data-target="mortgage" role="tab">Mortgage</button>
+      <button class="tab" data-target="tip" role="tab">Tip</button>
+      <button class="tab" data-target="discount" role="tab">Discount</button>
+    </div>
 
-          <div class="mini">
-            <div class="m-icon" style="background:linear-gradient(135deg,#6b7dff,#0bb3ff)">📂</div>
-            <div>
-              <div class="m-text">Organized categories</div>
-              <div class="m-sub">Group tools into categories for large lists (100s+) with no APIs.</div>
-            </div>
-          </div>
+    <!-- 🔥 smooth scrolling ticker -->
+    <div class="ticker-wrap" aria-hidden="false">
+      <div class="ticker">
+        <span>⚡ <b>Fast</b> · instant results</span>
+        <span>🔒 <b>Private</b> · runs in your browser</span>
+        <span>🧰 <b>All-in-one</b> · math, BMI, age, GST, SIP…</span>
+        <span>🌊 <b>Ocean theme</b> is default</span>
+        <span>🧩 <b>No APIs</b> · fully client-side</span>
+        <!-- duplicate items for seamless loop -->
+        <span>⚡ <b>Fast</b> · instant results</span>
+        <span>🔒 <b>Private</b> · runs in your browser</span>
+        <span>🧰 <b>All-in-one</b> · math, BMI, age, GST, SIP…</span>
+        <span>🌊 <b>Ocean theme</b> is default</span>
+        <span>🧩 <b>No APIs</b> · fully client-side</span>
+      </div>
+    </div>
+  </section>
 
-          <div class="mini">
-            <div class="m-icon" style="background:linear-gradient(135deg,#c471ed,#7bffdd)">🔐</div>
-            <div>
-              <div class="m-text">Privacy first</div>
-              <div class="m-sub">No tracking, minimal dependencies — everything runs client-side when possible.</div>
-            </div>
-          </div>
+  <!-- MAIN GRID -->
+  <main class="grid" role="main">
+    <!-- LEFT: calculators -->
+    <div>
+      <section id="basic" class="card" aria-labelledby="basicTitle">
+        <h2 id="basicTitle">Basic Calculator</h2>
+        <div class="hint">Use keypad or type on your keyboard. Supports + - × ÷ ( ) and decimals.</div>
+        <input id="basicDisplay" type="text" value="0" aria-label="Calculator display" />
+        <div class="key-grid" style="margin-top:12px">
+          <div class="key" onclick="basicAdd('7')">7</div>
+          <div class="key" onclick="basicAdd('8')">8</div>
+          <div class="key" onclick="basicAdd('9')">9</div>
+          <div class="key op" onclick="basicAdd('/')">÷</div>
+
+          <div class="key" onclick="basicAdd('4')">4</div>
+          <div class="key" onclick="basicAdd('5')">5</div>
+          <div class="key" onclick="basicAdd('6')">6</div>
+          <div class="key op" onclick="basicAdd('*')">×</div>
+
+          <div class="key" onclick="basicAdd('1')">1</div>
+          <div class="key" onclick="basicAdd('2')">2</div>
+          <div class="key" onclick="basicAdd('3')">3</div>
+          <div class="key op" onclick="basicAdd('-')">−</div>
+
+          <div class="key" onclick="basicAdd('0')">0</div>
+          <div class="key" onclick="basicAdd('.')">.</div>
+          <div class="key eq" onclick="basicEval()">=</div>
+          <div class="key op" onclick="basicAdd('+')">+</div>
+
+          <div class="key" style="grid-column:span 2" onclick="basicClear()">Clear</div>
+          <div class="key" style="grid-column:span 2" onclick="basicBack()">Back</div>
         </div>
+        <div id="basicRes" class="result" aria-live="polite"></div>
+      </section>
 
-        <div style="height:12px"></div>
-
-        <!-- Quick privacy / about card -->
-        <div class="card" style="padding:16px">
-          <div style="display:flex;gap:12px; align-items:center">
-            <div style="width:56px;height:56px;border-radius:12px; background:linear-gradient(135deg,var(--accent-start),var(--accent-end)); display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900">PR</div>
-            <div>
-              <div style="font-weight:800">Calculator By PirateRuler.com</div>
-              <div class="muted" style="font-size:13px">Reliable tools · Private & fast</div>
-            </div>
-          </div>
-
-          <div class="spacer"></div>
-
-          <div style="display:flex;flex-direction:column; gap:10px">
-            <a href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
-            <a href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-            <a href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
-            <a href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
-          </div>
-
-          <div class="backup" style="margin-top:14px">
-            Backup: <a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">pirateruler.com</a>
-          </div>
+      <section id="age" class="card" hidden aria-labelledby="ageTitle">
+        <h2 id="ageTitle">Age Calculator</h2>
+        <div class="hint">Calculate years, months and days from birthday.</div>
+        <input id="dob" type="date" aria-label="Date of birth" />
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeAge()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('dob').value=''; setText('ageRes','')">Clear</button>
         </div>
-      </aside>
-    </main>
+        <div id="ageRes" class="result" aria-live="polite"></div>
+      </section>
 
-    <!-- Footer -->
-    <footer>
-      <a class="visit" href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">Visit PirateRuler.com</a>
-      <div style="height:12px"></div>
-      <small class="muted">© <span id="year"></span> Calculator By PirateRuler.com — All rights reserved. Backup & resources: pirateruler.com</small>
-    </footer>
-  </div>
+      <section id="bmi" class="card" hidden aria-labelledby="bmiTitle">
+        <h2 id="bmiTitle">BMI Calculator</h2>
+        <div class="hint">Enter weight (kg) and height (m).</div>
+        <div class="row" style="margin-top:10px">
+          <input id="bmiW" type="number" placeholder="Weight (kg)" />
+          <input id="bmiH" type="number" placeholder="Height (m)" step="0.01" />
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeBMI()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('bmiW').value=''; document.getElementById('bmiH').value=''; setText('bmiRes','')">Clear</button>
+        </div>
+        <div id="bmiRes" class="result" aria-live="polite"></div>
+      </section>
 
-  <!-- Sidebar -->
-  <aside id="sidebar" class="sidebar" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="close"><button class="ghost" id="closeSidebar">Close</button></div>
-    <h3>PirateRuler Links</h3>
-    <p class="muted">Quick links & backup resources</p>
-    <nav class="nav-list" aria-label="PirateRuler quick links">
-      <a href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
-      <a href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
-      <a href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
-      <a href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
-    </nav>
-    <div class="backup">If this site is offline you can visit PirateRuler for backups & resources:<br><a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">pirateruler.com</a></div>
-  </aside>
+      <section id="gst" class="card" hidden>
+        <h2>GST Calculator</h2>
+        <div class="hint">Compute total with GST percent.</div>
+        <div class="row" style="margin-top:10px">
+          <input id="gstAmt" type="number" placeholder="Amount" />
+          <input id="gstRate" type="number" placeholder="GST %" />
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeGST()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('gstAmt').value='';document.getElementById('gstRate').value=''; setText('gstRes','')">Clear</button>
+        </div>
+        <div id="gstRes" class="result" aria-live="polite"></div>
+      </section>
 
-  <script>
-    // set footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
+      <section id="sip" class="card" hidden>
+        <h2>SIP Calculator</h2>
+        <div class="hint">Monthly invest, annual rate (%), years.</div>
+        <div class="row" style="margin-top:10px">
+          <input id="sipM" type="number" placeholder="Monthly invest" />
+          <input id="sipR" type="number" placeholder="Rate (%)" />
+        </div>
+        <div class="row" style="margin-top:10px">
+          <input id="sipY" type="number" placeholder="Years" />
+          <div></div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeSIP()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('sipM').value='';document.getElementById('sipR').value='';document.getElementById('sipY').value=''; setText('sipRes','')">Clear</button>
+        </div>
+        <div id="sipRes" class="result" aria-live="polite"></div>
+      </section>
 
-    // Theme handling: multi-theme (light, dark, ocean, sunset)
-    const root = document.documentElement;
-    const themeBtn = document.getElementById('themeBtn');
-    const themeList = document.getElementById('themeList');
-    const themeSelectWrap = document.getElementById('themeSelectWrap');
+      <section id="mortgage" class="card" hidden>
+        <h2>Mortgage Calculator</h2>
+        <div class="hint">Loan amount, annual interest (%) and years.</div>
+        <div class="row" style="margin-top:10px">
+          <input id="mortA" type="number" placeholder="Loan amount" />
+          <input id="mortR" type="number" placeholder="Annual rate (%)" />
+        </div>
+        <div class="row" style="margin-top:10px">
+          <input id="mortY" type="number" placeholder="Years" />
+          <div></div>
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeMort()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('mortA').value='';document.getElementById('mortR').value='';document.getElementById('mortY').value=''; setText('mortRes','')">Clear</button>
+        </div>
+        <div id="mortRes" class="result" aria-live="polite"></div>
+      </section>
 
-    function applyTheme(t){
-      ['dark','ocean','sunset'].forEach(c=> root.classList.remove(c));
-      if(t === 'dark'){ root.classList.add('dark'); localStorage.setItem('site-theme','dark'); themeBtn.textContent = 'Dark' }
-      else if(t === 'ocean'){ root.classList.add('ocean'); localStorage.setItem('site-theme','ocean'); themeBtn.textContent = 'Ocean' }
-      else if(t === 'sunset'){ root.classList.add('sunset'); localStorage.setItem('site-theme','sunset'); themeBtn.textContent = 'Sunset' }
-      else { localStorage.setItem('site-theme','light'); themeBtn.textContent = 'Light' }
-    }
+      <section id="tip" class="card" hidden>
+        <h2>Tip Calculator</h2>
+        <div class="hint">Add tip percentage to bill.</div>
+        <div class="row" style="margin-top:10px">
+          <input id="tipBill" type="number" placeholder="Bill amount" />
+          <input id="tipPct" type="number" placeholder="Tip %" />
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeTip()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('tipBill').value='';document.getElementById('tipPct').value=''; setText('tipRes','')">Clear</button>
+        </div>
+        <div id="tipRes" class="result" aria-live="polite"></div>
+      </section>
 
-    // load saved or default to ocean per your request
-    const saved = localStorage.getItem('site-theme');
-    if(saved) applyTheme(saved); else applyTheme('ocean');
+      <section id="discount" class="card" hidden>
+        <h2>Discount Calculator</h2>
+        <div class="hint">Final price after percentage discount.</div>
+        <div class="row" style="margin-top:10px">
+          <input id="discPrice" type="number" placeholder="Original price" />
+          <input id="discPct" type="number" placeholder="Discount %" />
+        </div>
+        <div class="row" style="margin-top:12px">
+          <button class="primary" onclick="computeDisc()">Calculate</button>
+          <button class="ghost" onclick="document.getElementById('discPrice').value='';document.getElementById('discPct').value=''; setText('discRes','')">Clear</button>
+        </div>
+        <div id="discRes" class="result" aria-live="polite"></div>
+      </section>
+    </div>
 
-    // theme dropdown toggle + click handler
-    themeBtn.addEventListener('click', e => {
-      themeList.classList.toggle('open');
-      themeList.setAttribute('aria-hidden', String(!themeList.classList.contains('open')));
-    });
-    themeList.addEventListener('click', e => {
-      const t = e.target.closest('.theme-item');
-      if(!t) return;
-      applyTheme(t.dataset.theme);
-      themeList.classList.remove('open');
-      themeList.setAttribute('aria-hidden','true');
-    });
-    // close on outside click
-    document.addEventListener('click', e => {
-      if(!themeSelectWrap.contains(e.target)) { themeList.classList.remove('open'); themeList.setAttribute('aria-hidden','true'); }
-    });
+    <!-- RIGHT: exactly 6 equal boxes -->
+    <aside>
+      <div class="features" aria-hidden="false">
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,var(--accent-start),var(--accent-end))">⚡</div>
+          <div><div class="f-title">Lightning fast</div><div class="f-desc">Optimized code — instant results on mobile & desktop.</div></div>
+        </div>
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,#8ee36b,#2bbf6f)">🔒</div>
+          <div><div class="f-title">Private by design</div><div class="f-desc">Everything runs in your browser. No tracking.</div></div>
+        </div>
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,#ffb86b,#ff6b7a)">🧰</div>
+          <div><div class="f-title">All tools in one</div><div class="f-desc">Basic math, BMI, age, GST, SIP, mortgage, tip, discount.</div></div>
+        </div>
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,#c471ed,#7bffdd)">🌐</div>
+          <div><div class="f-title">Backup resources</div><div class="f-desc">If this site is offline, use PirateRuler.com backups.</div></div>
+        </div>
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,#7bd6ff,#6b7dff)">📱</div>
+          <div><div class="f-title">Mobile-first</div><div class="f-desc">Looks great on phones and desktops.</div></div>
+        </div>
+        <div class="feature">
+          <div class="f-icon" style="background:linear-gradient(135deg,#ff7aa2,#6b7dff)">🔧</div>
+          <div><div class="f-title">Dev friendly</div><div class="f-desc">Lightweight code you can fork and customize.</div></div>
+        </div>
+      </div>
+    </aside>
+  </main>
 
-    // Sidebar open/close
-    const sidebar = document.getElementById('sidebar');
-    const hambBtn = document.getElementById('hambBtn');
-    const closeSidebar = document.getElementById('closeSidebar');
-    function openSidebar(){
-      sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false');
-      closeSidebar.focus();
-    }
-    function closeSB(){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); }
-    hambBtn.addEventListener('click', openSidebar);
-    closeSidebar.addEventListener('click', closeSB);
-    document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSB(); });
+  <!-- Footer -->
+  <footer>
+    <a class="visit" href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">Visit PirateRuler.com</a>
+    <div style="height:12px"></div>
+    <small class="muted">© <span id="year"></span> Calculator By PirateRuler.com — All rights reserved. Backup & resources: pirateruler.com</small>
+  </footer>
+</div>
 
-    // Tabs logic
-    const tabs = Array.from(document.querySelectorAll('.tab'));
-    function showTab(id){
-      document.querySelectorAll('main section.card').forEach(s => s.hidden = true);
-      const el = document.getElementById(id);
-      if(el) el.hidden = false;
-      tabs.forEach(t => t.classList.toggle('active', t.dataset.target === id));
-      setTimeout(()=> {
-        const rect = el && el.getBoundingClientRect();
-        if(rect) window.scrollTo({top: window.scrollY + rect.top - 80, behavior:'smooth'});
-      }, 70);
-    }
-    tabs.forEach(t => t.addEventListener('click', ()=> showTab(t.dataset.target)));
-    showTab('basic');
+<!-- Sidebar -->
+<aside id="sidebar" class="sidebar" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="close"><button class="ghost" id="closeSidebar">Close</button></div>
+  <h3>PirateRuler Links</h3>
+  <p class="muted">Quick links & backup resources</p>
+  <nav class="nav-list" aria-label="PirateRuler quick links">
+    <a href="https://www.pirateruler.com/post/about.html" target="_blank" rel="noopener noreferrer">About — PirateRuler</a>
+    <a href="https://www.pirateruler.com/post/privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+    <a href="https://www.pirateruler.com/post/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
+    <a href="https://www.pirateruler.com/post/terms.html" target="_blank" rel="noopener noreferrer">Terms & Service</a>
+  </nav>
+  <div class="backup">If this site is offline you can visit PirateRuler for backups & resources:<br><a href="https://pirateruler.com" target="_blank" rel="noopener noreferrer">pirateruler.com</a></div>
+</aside>
 
-    // SAFE eval helpers for basic calculator (unchanged logic)
-    let expr = '';
-    const display = document.getElementById('basicDisplay');
-    function setText(id,val){ const el=document.getElementById(id); if(el) el.textContent = val; }
-    function basicAdd(v){
-      if(display.value === '0' && v !== '.' ) display.value = '';
-      expr = display.value + v;
-      display.value = expr;
-    }
-    function basicClear(){ expr=''; display.value='0'; setText('basicRes',''); }
-    function basicBack(){ expr = display.value.slice(0,-1); display.value = expr || '0'; }
-    function basicEval(){
-      if(!display.value) return;
-      const safe = display.value.replace(/[^0-9+\-*/().% ]/g,'');
-      try {
-        const res = Function('"use strict";return ('+safe+')')();
-        setText('basicRes', isFinite(res) ? 'Result: ' + res : 'Invalid');
-        display.value = String(res);
-      } catch(e){
-        setText('basicRes','Invalid expression');
-      }
-    }
-    document.addEventListener('keydown', (e) => {
-      if(document.activeElement && (document.activeElement.tagName === 'INPUT')) return;
-      if(/^[0-9+\-*/().%]$/.test(e.key)) basicAdd(e.key);
-      if(e.key === 'Enter') basicEval();
-      if(e.key === 'Backspace') basicBack();
-    });
+<script>
+  // footer year
+  document.getElementById('year').textContent = new Date().getFullYear();
 
-    // calculators (unchanged code)
-    function computeAge(){
-      const v = document.getElementById('dob').value;
-      if(!v) return setText('ageRes','Please select birthday');
-      const dob = new Date(v);
-      if(isNaN(dob)) return setText('ageRes','Invalid date');
-      const now = new Date();
-      let y = now.getFullYear() - dob.getFullYear();
-      let m = now.getMonth() - dob.getMonth();
-      let d = now.getDate() - dob.getDate();
-      if(d < 0){ m--; d += new Date(now.getFullYear(), now.getMonth(), 0).getDate(); }
-      if(m < 0){ y--; m += 12; }
-      setText('ageRes', `${y} years, ${m} months, ${d} days`);
-    }
+  // themes
+  const root=document.documentElement, themeBtn=document.getElementById('themeBtn'),
+        themeList=document.getElementById('themeList'), themeWrap=document.getElementById('themeSelectWrap');
+  function applyTheme(t){
+    ['dark','ocean','sunset'].forEach(c=>root.classList.remove(c));
+    if(t==='dark'){root.classList.add('dark'); localStorage.setItem('site-theme','dark'); themeBtn.textContent='Dark'}
+    else if(t==='ocean'){root.classList.add('ocean'); localStorage.setItem('site-theme','ocean'); themeBtn.textContent='Ocean'}
+    else if(t==='sunset'){root.classList.add('sunset'); localStorage.setItem('site-theme','sunset'); themeBtn.textContent='Sunset'}
+    else{localStorage.setItem('site-theme','light'); themeBtn.textContent='Light'}
+  }
+  const saved = localStorage.getItem('site-theme'); applyTheme(saved || 'ocean');
+  themeBtn.addEventListener('click',()=>{themeList.classList.toggle('open'); themeList.setAttribute('aria-hidden', String(!themeList.classList.contains('open')));});
+  themeList.addEventListener('click',e=>{const t=e.target.closest('.theme-item'); if(!t) return; applyTheme(t.dataset.theme); themeList.classList.remove('open'); themeList.setAttribute('aria-hidden','true');});
+  document.addEventListener('click',e=>{ if(!themeWrap.contains(e.target)) { themeList.classList.remove('open'); themeList.setAttribute('aria-hidden','true'); } });
 
-    function computeBMI(){
-      const w = parseFloat(document.getElementById('bmiW').value);
-      const h = parseFloat(document.getElementById('bmiH').value);
-      if(!w || !h) return setText('bmiRes','Enter valid weight and height');
-      const bmi = w / (h*h);
-      setText('bmiRes', 'BMI: ' + bmi.toFixed(2));
-    }
+  // sidebar
+  const sidebar=document.getElementById('sidebar'), hambBtn=document.getElementById('hambBtn'), closeSidebar=document.getElementById('closeSidebar');
+  function openSidebar(){ sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden','false'); closeSidebar.focus(); }
+  function closeSB(){ sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden','true'); }
+  hambBtn.addEventListener('click',openSidebar); closeSidebar.addEventListener('click',closeSB);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeSB(); });
+  document.addEventListener('click',e=>{ if(!sidebar.classList.contains('open')) return; const inside=sidebar.contains(e.target)||hambBtn.contains(e.target); if(!inside) closeSB(); });
 
-    function computeGST(){
-      const a = parseFloat(document.getElementById('gstAmt').value);
-      const r = parseFloat(document.getElementById('gstRate').value);
-      if(isNaN(a) || isNaN(r)) return setText('gstRes','Enter amount & rate');
-      const t = a + (a*r/100);
-      setText('gstRes', 'Total: ' + t.toFixed(2));
-    }
+  // tabs
+  const tabs=[...document.querySelectorAll('.tab')];
+  function showTab(id){
+    document.querySelectorAll('main section.card').forEach(s=>s.hidden=true);
+    const el=document.getElementById(id); if(el) el.hidden=false;
+    tabs.forEach(t=>t.classList.toggle('active',t.dataset.target===id));
+    setTimeout(()=>{ const rect=el && el.getBoundingClientRect(); if(rect) window.scrollTo({top: window.scrollY + rect.top - 80, behavior:'smooth'}); },70);
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.target)));
+  showTab('basic');
 
-    function computeSIP(){
-      const m = parseFloat(document.getElementById('sipM').value);
-      const annual = parseFloat(document.getElementById('sipR').value);
-      const years = parseFloat(document.getElementById('sipY').value);
-      if(isNaN(m) || isNaN(annual) || isNaN(years)) return setText('sipRes','Enter monthly, rate and years');
-      const r = annual/100/12; const n = years*12;
-      const fv = m * ((Math.pow(1+r,n)-1)/r) * (1+r);
-      setText('sipRes','Future: ' + fv.toFixed(2));
-    }
+  // calculator logic (same)
+  let expr=''; const display=document.getElementById('basicDisplay');
+  function setText(id,val){const el=document.getElementById(id); if(el) el.textContent=val;}
+  function basicAdd(v){ if(display.value==='0' && v!=='.') display.value=''; expr=display.value+v; display.value=expr; }
+  function basicClear(){ expr=''; display.value='0'; setText('basicRes',''); }
+  function basicBack(){ expr=display.value.slice(0,-1); display.value=expr||'0'; }
+  function basicEval(){ if(!display.value) return; const safe=display.value.replace(/[^0-9+\-*/().% ]/g,''); try{ const res=Function('"use strict";return ('+safe+')')(); setText('basicRes', isFinite(res)?'Result: '+res:'Invalid'); display.value=String(res);}catch(e){ setText('basicRes','Invalid expression'); } }
+  document.addEventListener('keydown',e=>{ if(document.activeElement && document.activeElement.tagName==='INPUT') return; if(/^[0-9+\-*/().%]$/.test(e.key)) basicAdd(e.key); if(e.key==='Enter') basicEval(); if(e.key==='Backspace') basicBack(); });
 
-    function computeMort(){
-      const a = parseFloat(document.getElementById('mortA').value);
-      const annual = parseFloat(document.getElementById('mortR').value);
-      const years = parseFloat(document.getElementById('mortY').value);
-      if(isNaN(a) || isNaN(annual) || isNaN(years)) return setText('mortRes','Enter valid values');
-      const r = annual/100/12; const n = years*12;
-      const emi = a * r * (Math.pow(1+r,n)/(Math.pow(1+r,n)-1));
-      setText('mortRes','Monthly EMI: ' + emi.toFixed(2));
-    }
-
-    function computeTip(){
-      const b = parseFloat(document.getElementById('tipBill').value);
-      const p = parseFloat(document.getElementById('tipPct').value);
-      if(isNaN(b) || isNaN(p)) return setText('tipRes','Enter bill & tip%');
-      const tot = b + (b*p/100);
-      setText('tipRes','Total: ' + tot.toFixed(2));
-    }
-
-    function computeDisc(){
-      const p = parseFloat(document.getElementById('discPrice').value);
-      const d = parseFloat(document.getElementById('discPct').value);
-      if(isNaN(p) || isNaN(d)) return setText('discRes','Enter price & discount');
-      const f = p - (p*d/100);
-      setText('discRes','Final: ' + f.toFixed(2));
-    }
-
-    // UX: close sidebar on outside click
-    document.addEventListener('click', function(e){
-      if(!sidebar.classList.contains('open')) return;
-      const inside = sidebar.contains(e.target) || hambBtn.contains(e.target);
-      if(!inside) closeSB();
-    });
-
-    // responsive sidebar width
-    function updateSidebarWidth(){
-      if(window.innerWidth < 420) sidebar.style.width = '94vw';
-      else if(window.innerWidth < 900) sidebar.style.width = '360px';
-      else sidebar.style.width = '360px';
-    }
-    window.addEventListener('resize', updateSidebarWidth);
-    updateSidebarWidth();
-  </script>
+  // responsive sidebar width
+  function updateSidebarWidth(){ if(window.innerWidth<420) sidebar.style.width='94vw'; else sidebar.style.width='360px'; }
+  window.addEventListener('resize',updateSidebarWidth); updateSidebarWidth();
+</script>
 </body>
 </html>
